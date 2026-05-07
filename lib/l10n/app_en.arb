@@ -1,0 +1,89 @@
+{
+  "nutrition": "Nutrition",
+  "nutrition_plan": "Nutrition Plan",
+  "nutrition_details": "Nutrition Details",
+  "daily_nutrition": "Daily Nutrition",
+  "nutrition_goal": "Nutrition Goal",
+
+  "workout": "Workout",
+  "workouts": "Workouts",
+  "workout_plan": "Workout Plan",
+  "workout_details": "Workout Details",
+  "daily_workout": "Daily Workout",
+  "weekly_workout": "Weekly Workout",
+
+  "start_workout": "Start Workout",
+  "complete_workout": "Complete Workout",
+  "workout_completed": "Workout Completed",
+
+  "exercise": "Exercise",
+  "exercises": "Exercises",
+
+  "push_workout": "Push Workout",
+  "pull_workout": "Pull Workout",
+  "legs_workout": "Legs Workout",
+  "cardio_workout": "Cardio Workout",
+  "full_body_workout": "Full Body Workout",
+
+  "workout_duration": "Workout Duration",
+  "workout_level": "Workout Level",
+
+  "beginner": "Beginner",
+  "intermediate": "Intermediate",
+  "advanced": "Advanced",
+
+  "meal_plan": "Meal Plan",
+  "meal_details": "Meal Details",
+  "meal_category": "Meal Category",
+
+  "healthy_food": "Healthy Food",
+  "recommended_meals": "Recommended Meals",
+
+  "calories": "Calories",
+  "protein": "Protein",
+  "carbohydrates": "Carbohydrates",
+  "fats": "Fats",
+
+  "water_goal": "Water Goal",
+  "water_tracker": "Water Tracker",
+
+  "body_analysis": "Body Analysis",
+  "fitness_goal": "Fitness Goal",
+
+  "muscle_gain": "Muscle Gain",
+  "fat_loss": "Fat Loss",
+
+  "track_progress": "Track Progress",
+
+  "exercise_details": "Exercise Details",
+
+  "watch_video": "Watch Video",
+
+  "sets": "Sets",
+  "reps": "Reps",
+  "rest_time": "Rest Time",
+
+  "search_exercise": "Search Exercise",
+  "search_meal": "Search Meal",
+
+  "favorite_meals": "Favorite Meals",
+  "favorite_exercises": "Favorite Exercises",
+    "home": "Home",
+ "profile": "Profile",
+  "register": "Register",
+   "login": "Login",
+   "create_account": "Create Account",
+   "already_have_account": "Already Have Account?",
+   "dont_have_account": "Don't Have Account?",
+   "email": "Email",
+   "password": "Password",
+   "re_password": "Re-Password",
+   "forget_password": "Forget Password",
+   "reset_password": "Reset Password",
+   "login_with_google": "Login With Google",
+   "logout": "Logout",
+   "name": "Name",
+   "phone": "Phone"
+
+
+}

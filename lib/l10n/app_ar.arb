@@ -1,0 +1,88 @@
+{
+  "nutrition": "التغذية",
+  "nutrition_plan": "الخطة الغذائية",
+  "nutrition_details": "تفاصيل التغذية",
+  "daily_nutrition": "التغذية اليومية",
+  "nutrition_goal": "هدف التغذية",
+
+  "workout": "التمرين",
+  "workouts": "التمارين",
+  "workout_plan": "خطة التمرين",
+  "workout_details": "تفاصيل التمرين",
+  "daily_workout": "تمرين اليوم",
+  "weekly_workout": "التمرين الأسبوعي",
+
+  "start_workout": "ابدأ التمرين",
+  "complete_workout": "إنهاء التمرين",
+  "workout_completed": "تم إنهاء التمرين",
+
+  "exercise": "تمرين",
+  "exercises": "التمارين",
+
+  "push_workout": "تمارين الدفع",
+  "pull_workout": "تمارين السحب",
+  "legs_workout": "تمارين الأرجل",
+  "cardio_workout": "تمارين الكارديو",
+  "full_body_workout": "تمارين الجسم بالكامل",
+
+  "workout_duration": "مدة التمرين",
+  "workout_level": "مستوى التمرين",
+
+  "beginner": "مبتدئ",
+  "intermediate": "متوسط",
+  "advanced": "متقدم",
+
+  "meal_plan": "الخطة الغذائية",
+  "meal_details": "تفاصيل الوجبة",
+  "meal_category": "نوع الوجبة",
+
+  "healthy_food": "طعام صحي",
+  "recommended_meals": "الوجبات المقترحة",
+
+  "calories": "السعرات الحرارية",
+  "protein": "البروتين",
+  "carbohydrates": "الكربوهيدرات",
+  "fats": "الدهون",
+
+  "water_goal": "هدف شرب الماء",
+  "water_tracker": "متابعة شرب الماء",
+
+  "body_analysis": "تحليل الجسم",
+  "fitness_goal": "هدف اللياقة",
+
+  "muscle_gain": "زيادة العضلات",
+  "fat_loss": "خسارة الدهون",
+
+  "track_progress": "متابعة التقدم",
+
+  "exercise_details": "تفاصيل التمرين",
+
+  "watch_video": "مشاهدة الفيديو",
+
+  "sets": "المجموعات",
+  "reps": "التكرارات",
+  "rest_time": "وقت الراحة",
+
+  "search_exercise": "البحث عن تمرين",
+  "search_meal": "البحث عن وجبة",
+
+  "favorite_meals": "الوجبات المفضلة",
+  "favorite_exercises": "التمارين المفضلة",
+    "home": "الرئيسية",
+  "profile": "الملف الشخصي",
+   "register": "إنشاء حساب",
+    "login": "تسجيل الدخول",
+    "create_account": "إنشاء حساب",
+    "already_have_account": "لديك حساب بالفعل؟",
+    "dont_have_account": "ليس لديك حساب؟",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "re_password": "تأكيد كلمة المرور",
+    "forget_password": "نسيت كلمة المرور",
+    "reset_password": "إعادة تعيين كلمة المرور",
+    "login_with_google": "تسجيل الدخول بواسطة جوجل",
+    "logout": "تسجيل الخروج",
+    "name": "الاسم",
+    "phone": "رقم الهاتف"
+
+}
