@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "687853044448",
+    "project_id": "h2o-application-1d27f",
+    "storage_bucket": "h2o-application-1d27f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687853044448:android:0f9f8dfd7011e5fce54685",
+        "android_client_info": {
+          "package_name": "com.example.h20_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwlCO6TpGXOfDQqjsWtpKfk-29k_nsPTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
