@@ -175,14 +175,13 @@ class _RegisterState extends State<Register> {
     );
   }
 
-
   void _registered() async {
     FirebaseAuth.instance.currentUser;
     if (formkey.currentState?.validate() == false) return;
     try {
       uitils.ShowLoading(context);
       UserCredential userCredential = await Fairebaeservices.registers(_emailcontroller.text, _passwordcontroller.text);
-      //await  Fairebaeservices.addUasertoFireStore(UserModel(name:_namecontroller.text, id:userCredential.user!.uid, email: _emailcontroller.text));
+      await  Fairebaeservices.addUasertoFireStore(UserModel(name:_namecontroller.text, id:userCredential.user!.uid, email: _emailcontroller.text));
       uitils.hideDialog(context);
       uitils.ShowToastMassage("succefuly regested", Colors.green);
       Navigator.pushReplacementNamed(context, Routesmanger.Logins);
@@ -194,6 +193,8 @@ class _RegisterState extends State<Register> {
       uitils.ShowToastMassage("failed to register ", Colors.red);
     }
   }
+
+
 
 }
 

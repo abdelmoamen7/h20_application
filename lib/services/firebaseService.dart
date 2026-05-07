@@ -15,6 +15,18 @@ class Fairebaeservices{
         .signInWithEmailAndPassword(email: email, password: password);
     return userCredential;
   }
+  static addUasertoFireStore(UserModel user) {
+    FirebaseFirestore db=FirebaseFirestore.instance;
+    CollectionReference<UserModel> usercollection = db.collection("Users").withConverter<UserModel>(
+      fromFirestore: (snapshot, _) => UserModel.fromjson(snapshot.data()!),
+      toFirestore: (user, _) => user.toJosn(),
+    );
+    DocumentReference<UserModel> UserDocument = usercollection.doc(user.id);
+    return UserDocument.set(user);
+  }
+
+
+
   static  getUserId(String id)async {
     FirebaseFirestore db=FirebaseFirestore.instance;
     CollectionReference<UserModel> usercollection = db.collection("Users").withConverter<UserModel>(

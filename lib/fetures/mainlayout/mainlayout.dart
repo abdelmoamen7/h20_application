@@ -70,8 +70,8 @@ class _MainLayoutState extends State<MainLayout> {
       backgroundColor: Colorsmanger.Blue,
       items: [
         BottomNavigationBarItem(icon:  Icon(Icons.home), label: AppLocalizations.of(context)!.home),
-        BottomNavigationBarItem(icon: Icon(Icons.sports_gymnastics), label: AppLocalizations.of(context)!.workout),
         BottomNavigationBarItem(icon: Icon(Icons.no_meals), label:AppLocalizations.of(context)!.nutrition),
+        BottomNavigationBarItem(icon: Icon(Icons.sports_gymnastics), label: AppLocalizations.of(context)!.workout),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: AppLocalizations.of(context)!.profile),
       ],
     );
