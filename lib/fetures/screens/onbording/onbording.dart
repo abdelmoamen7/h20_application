@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:h20_application/core/assetsmanger/assetsmanger.dart';
 
 import '../../../core/routesmanger/routesManger.dart';
@@ -657,20 +658,23 @@ class _OnBoardingState
       UserModel.currentUser =
           user;
 
+      // Mark onboarding as completed in SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('onboardingCompleted', true);
+
+      if (!mounted) return;
       uitils.hideDialog(context);
 
       uitils.ShowToastMassage(
-
         "Information Saved",
-
         Colors.green,
       );
 
-      Navigator.pushReplacementNamed(
-
+      // Navigate to Home and remove all previous routes (no back button allowed)
+      Navigator.pushNamedAndRemoveUntil(
         context,
-
         Routesmanger.mainlayout,
+        (route) => false,
       );
 
     } on FirebaseException catch (e) {

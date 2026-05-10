@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/FreeExerciseModel.dart';
+import '../../fetures/mainlayout/tabs/workout/ExerciseDetails.dart';
 
 class FreeExerciseCard extends StatelessWidget {
   final FreeExerciseModel exercise;
@@ -14,6 +15,8 @@ class FreeExerciseCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      elevation: 3,
+      shadowColor: Colors.black12,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -37,7 +40,7 @@ class FreeExerciseCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -114,7 +117,12 @@ class FreeExerciseCard extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Can navigate to a detail screen if needed later
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExerciseDetails(exercise: exercise),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

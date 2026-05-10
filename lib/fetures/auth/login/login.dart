@@ -1,10 +1,8 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/assetsmanger/assetsmanger.dart';
 import '../../../core/colorsmanger/colorsmanger.dart';
@@ -19,32 +17,26 @@ import '../../../models/UserModel.dart';
 import '../../../services/FirebaseServcies/firebaseService.dart';
 
 class Login extends StatefulWidget {
-
   const Login({super.key});
 
+  @override
   State<Login> createState() => _LoginState();
-
 }
-///Yes — the controllers are the middle layer (bridge) between
-/// your UI (TextFields) and your logic (Firebase login method).
-///They hold the user’s input and let your logic read it easily.
-///Controllers are part of the UI layer
-///✅ They can pass data to backend or show backend data
-///✅ They act as a bridge, but they “live” on the UI side, not the backend side
+
 class _LoginState extends State<Login> {
-  bool securePassword=true;
-  late TextEditingController _namecontroller;    // this
+  bool securePassword = true;
   late TextEditingController _emailcontroller;
   late TextEditingController _passwordcontroller;
-  late TextEditingController _repasswordcontroller;//
-  GlobalKey<FormState> _formkey=GlobalKey<FormState>();
-  void initState() {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
+  @override
+  void initState() {
+    super.initState();
     _emailcontroller = TextEditingController();
     _passwordcontroller = TextEditingController();
-    super.initState();
   }
 
+  @override
   void dispose() {
     _emailcontroller.dispose();
     _passwordcontroller.dispose();
@@ -54,184 +46,229 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 21, vertical: 20),
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
           child: Form(
             key: _formkey,
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image(image: AssetImage(Imagemanger.logoimage),
-                    width: 136,
-                    height: 186,),
-                  SizedBox(height: 24,),
-                  CustomTextForm(
-                    controller: _emailcontroller,
-                    validator: (input) {
-                      if (input == null || input
-                          .trim()
-                          .isEmpty) {
-                        return "enter the email :";
-                      }
-                      if (!Validator.isValidEmail(input)) {
-                        return "the email format isn't coreect ";
-                      }
-                    },
-
-                    isObscure: false,
-                    keyboardType: TextInputType.emailAddress,
-                    labelText: AppLocalizations.of(context)!.email,
-                    prefixIcon: Icons.email,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 20.h),
+                Center(
+                  child: Image.asset(
+                    Imagemanger.logoimage,
+                    width: 120.w,
+                    height: 150.h,
                   ),
-                  SizedBox(height: 16,),
-                  CustomTextForm(
-                    controller: _passwordcontroller,
-                    validator: (input) {
-                      if (input == null || input
-                          .trim()
-                          .isEmpty) {
-                        return "the password is empty  :";
-                      }
-                      if (input.length < 8) {
-                        return " the password should be at least 6";
-                      }
-                      if (Validator.isValidEmail(input)) {
-                        return "the email format isn't coreect ";
-                      }
-                    },
-                    isObscure: securePassword,
-                    labelText: AppLocalizations.of(context)!.password,
-                    prefixIcon: Icons.lock,
-                    suffixIcon: IconButton(onPressed: () {
-                      securePassword = !securePassword;
+                ),
+                SizedBox(height: 30.h),
+                Text(
+                  "Welcome Back",
+                  style: GoogleFonts.inter(
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colorsmanger.darkblue,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  "Sign in to continue your fitness journey",
+                  style: GoogleFonts.inter(
+                    fontSize: 14.sp,
+                    color: Colorsmanger.Grey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 40.h),
+                CustomTextForm(
+                  controller: _emailcontroller,
+                  validator: (input) {
+                    if (input == null || input.trim().isEmpty) {
+                      return "Please enter your email";
+                    }
+                    if (!Validator.isValidEmail(input)) {
+                      return "The email format is incorrect";
+                    }
+                    return null;
+                  },
+                  isObscure: false,
+                  keyboardType: TextInputType.emailAddress,
+                  labelText: AppLocalizations.of(context)!.email,
+                  prefixIcon: Icons.email_outlined,
+                ),
+                SizedBox(height: 20.h),
+                CustomTextForm(
+                  controller: _passwordcontroller,
+                  validator: (input) {
+                    if (input == null || input.trim().isEmpty) {
+                      return "Please enter your password";
+                    }
+                    if (input.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    return null;
+                  },
+                  isObscure: securePassword,
+                  labelText: AppLocalizations.of(context)!.password,
+                  prefixIcon: Icons.lock_outline,
+                  suffixIcon: IconButton(
+                    onPressed: () {
                       setState(() {
-
+                        securePassword = !securePassword;
                       });
                     },
-                        icon: Icon(securePassword ? Icons.visibility_off : Icons
-                            .visibility)),
-                    keyboardType: TextInputType.visiblePassword,),
-                  SizedBox(height: 16,),
-                  Text(AppLocalizations.of(context)!.forget_password,
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                          color: Colorsmanger.Blue,
-                          decoration: TextDecoration.underline)),
-                  SizedBox(height: 16,),
-                  SizedBox(height: 16.h),
-                  CustomTextButton(
-                    texts: "Forgot Password",
-                    onTap: () {},
+                    icon: Icon(
+                      securePassword ? Icons.visibility_off : Icons.visibility,
+                      color: Colorsmanger.Grey,
+                    ),
                   ),
-                  SizedBox(height: 24.h),
-                  Coustom_Elvated_Button(
-                      text: AppLocalizations.of(context)!.login,
-                      onPress: _login),
-                  SizedBox(height: 24.h),
-                  Row(
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+                SizedBox(height: 12.h),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: CustomTextButton(
+                    texts: AppLocalizations.of(context)!.forget_password,
+                    onTap: () {
+                      // Handle forgot password
+                    },
+                  ),
+                ),
+                SizedBox(height: 30.h),
+                Coustom_Elvated_Button(
+                  text: AppLocalizations.of(context)!.login,
+                  onPress: _login,
+                ),
+                SizedBox(height: 24.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.dont_have_account,
+                      style: GoogleFonts.inter(
+                        fontSize: 14.sp,
+                        color: Colorsmanger.Grey,
+                      ),
+                    ),
+                    SizedBox(width: 4.w),
+                    CustomTextButton(
+                      texts: AppLocalizations.of(context)!.create_account,
+                      onTap: () {
+                        Navigator.pushNamed(context, Routesmanger.Registes);
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey.shade300,
+                        thickness: 1,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Text(
+                        "OR",
+                        style: GoogleFonts.inter(
+                          color: Colorsmanger.Grey,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey.shade300,
+                        thickness: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.h),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    side: BorderSide(color: Colors.grey.shade300),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(AppLocalizations.of(context)!.dont_have_account,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodySmall,),
-                      CustomTextButton(
-                        texts: AppLocalizations.of(context)!.create_account,
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            Routesmanger.Registes,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colorsmanger.Blue,
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 20,
-                        ),
-                      ),
-                      Text("or"),
-                      Expanded(
-                        child: Divider(
-                          color: Colorsmanger.Blue,
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 20,
+                      Image.asset(Imagemanger.Googlephoto, height: 24.h),
+                      SizedBox(width: 12.w),
+                      Text(
+                        "Continue with Google",
+                        style: GoogleFonts.inter(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colorsmanger.darkblue,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.h),
-                  OutlinedButton(
-
-                    style: OutlinedButton.styleFrom(
-                        padding: REdgeInsets.symmetric(vertical: 16),
-                        side: BorderSide(color: Colorsmanger.Blue),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.r)
-                        )
-                    ),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(Imagemanger.Googlephoto),
-                        SizedBox(width: 4.w),
-                        Text("Google",
-                          style: GoogleFonts.inter(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colorsmanger.Blue,
-
-
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                ]
-
+                ),
+                SizedBox(height: 20.h),
+              ],
             ),
           ),
         ),
       ),
     );
   }
-  /// this is the static login function that come from the  firebse service to login:
+
   void _login() async {
     if (_formkey.currentState?.validate() == false) return;
     try {
       uitils.ShowLoading(context);
-      /// taking the email and passwords by controlers
-      UserCredential userCredential = await  Fairebaeservices.login(_emailcontroller.text, _passwordcontroller.text);
-      UserModel.currentUser= await Fairebaeservices.getUserId(userCredential.user!.uid);
+      
+      UserCredential userCredential = await Fairebaeservices.login(
+        _emailcontroller.text.trim(), 
+        _passwordcontroller.text,
+      );
+      
+      UserModel? user = await Fairebaeservices.getUserId(userCredential.user!.uid);
+      
+      if (!mounted) return;
       uitils.hideDialog(context);
 
-      // Check if user has already entered their onboarding data
-      if (UserModel.currentUser != null && UserModel.currentUser!.weight > 0) {
-        Navigator.pushReplacementNamed(context, Routesmanger.mainlayout);
+      if (user != null) {
+        UserModel.currentUser = user;
+        
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        
+        // If the user has valid profile data, they have completed onboarding
+        if (user.age > 0 || user.weight > 0) {
+          await prefs.setBool('onboardingCompleted', true);
+          if (!mounted) return;
+          Navigator.pushNamedAndRemoveUntil(context, Routesmanger.mainlayout, (route) => false);
+        } else {
+          // Exists in DB but no profile data
+          await prefs.setBool('onboardingCompleted', false);
+          if (!mounted) return;
+          Navigator.pushNamedAndRemoveUntil(context, Routesmanger.Onbording, (route) => false);
+        }
       } else {
-        Navigator.pushReplacementNamed(context, Routesmanger.Onbording);
+        // Authenticated but no Firestore document found, need onboarding
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('onboardingCompleted', false);
+        if (!mounted) return;
+        Navigator.pushNamedAndRemoveUntil(context, Routesmanger.Onbording, (route) => false);
       }
       
-      print(" Login success, navigating now...");
     } on FirebaseAuthException catch (e) {
       uitils.hideDialog(context);
-      uitils.ShowToastMassage(e.code, Colors.red);
+      uitils.ShowToastMassage(e.message ?? e.code, Colors.red);
     } catch (e) {
       uitils.hideDialog(context);
-      uitils.ShowToastMassage("failed to Login ", Colors.red);
+      uitils.ShowToastMassage("Failed to Login", Colors.red);
     }
   }
 }
-

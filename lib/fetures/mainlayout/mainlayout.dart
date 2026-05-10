@@ -40,7 +40,7 @@ class _MainLayoutState extends State<MainLayout> {
       body: tab[selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // floatingActionButton: _buildFloatingActionButton(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: _buildCustomBottomNavigationBar(),
     );
   }
 
@@ -57,20 +57,90 @@ class _MainLayoutState extends State<MainLayout> {
   //   );
   // }
 
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      currentIndex: selectedIndex,
-      onTap: _onTap,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white70,
-      backgroundColor: Colorsmanger.Blue,
-      items: [
-        BottomNavigationBarItem(icon:  Icon(Icons.home), label: AppLocalizations.of(context)!.home),
-        BottomNavigationBarItem(icon: Icon(Icons.no_meals), label:AppLocalizations.of(context)!.nutrition),
-        BottomNavigationBarItem(icon: Icon(Icons.sports_gymnastics), label: AppLocalizations.of(context)!.workout),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: AppLocalizations.of(context)!.profile),
-      ],
+  Widget _buildCustomBottomNavigationBar() {
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        decoration: BoxDecoration(
+          color: Colorsmanger.Blue,
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: [
+            BoxShadow(
+              color: Colorsmanger.Blue.withValues(alpha: 0.4),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(tab.length, (index) {
+            bool isSelected = selectedIndex == index;
+            IconData icon = _getIcon(index);
+            String label = _getLabel(index, context);
+
+            return GestureDetector(
+              onTap: () => _onTap(index),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: isSelected ? Colors.white.withValues(alpha: 0.25) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  children: [
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+                      child: Icon(
+                        icon,
+                        key: ValueKey<bool>(isSelected),
+                        color: Colors.white,
+                        size: isSelected ? 26 : 24,
+                      ),
+                    ),
+                    if (isSelected)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          label,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
     );
+  }
+
+  IconData _getIcon(int index) {
+    switch (index) {
+      case 0: return Icons.home_rounded;
+      case 1: return Icons.restaurant_menu_rounded;
+      case 2: return Icons.fitness_center_rounded;
+      case 3: return Icons.person_rounded;
+      default: return Icons.home;
+    }
+  }
+
+  String _getLabel(int index, BuildContext context) {
+    switch (index) {
+      case 0: return AppLocalizations.of(context)!.home;
+      case 1: return AppLocalizations.of(context)!.nutrition;
+      case 2: return AppLocalizations.of(context)!.workout;
+      case 3: return AppLocalizations.of(context)!.profile;
+      default: return "";
+    }
   }
 }

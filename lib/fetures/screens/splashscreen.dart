@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/assetsmanger/assetsmanger.dart';
 import '../../core/colorsmanger/colorsmanger.dart';
 import '../../core/routesmanger/routesManger.dart';
-import '../../models/UserModel.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
 
   @override
   State<Splashscreen> createState() => _SplashscreenState();
-
 }
-
 
 class _SplashscreenState extends State<Splashscreen> {
   @override
@@ -20,40 +19,49 @@ class _SplashscreenState extends State<Splashscreen> {
     navigatestate();
   }
 
-  void navigatestate(){
-    Future.delayed(Duration(seconds: 2),(){
-      if (UserModel.currentUser != null) {
-        // User is logged in
-        if (UserModel.currentUser!.weight > 0) {
-          Navigator.pushReplacementNamed(context, Routesmanger.mainlayout);
-        } else {
-          Navigator.pushReplacementNamed(context, Routesmanger.Onbording);
-        }
+  void navigatestate() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
+
+    if (firebaseUser != null) {
+      // User is authenticated in Firebase
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool onboardingCompleted = prefs.getBool('onboardingCompleted') ?? false;
+
+      if (onboardingCompleted) {
+        Navigator.pushReplacementNamed(context, Routesmanger.mainlayout);
       } else {
-        // User not logged in
-        Navigator.pushReplacementNamed(context, Routesmanger.Logins);
+        Navigator.pushReplacementNamed(context, Routesmanger.Onbording);
       }
+    } else {
+      // User not logged in
+      Navigator.pushReplacementNamed(context, Routesmanger.Logins);
     }
-    );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colorsmanger.Whiteblue,
-      body:
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: 200,),
-          Container(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
               width: 200,
               height: 250,
-              child: Image(image: AssetImage(Imagemanger.logoimage,),)),
-
-        ],
+              child: Image(image: AssetImage(Imagemanger.logoimage)),
+            ),
+            const SizedBox(height: 20),
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colorsmanger.Blue),
+            ),
+          ],
+        ),
       ),
     );
-
   }
 }
-//Text("Laungauge",style: GoogleFonts.inter(fontSize: 16,fontWeight: FontWeight.w500,color: Colorsmanger.darkblue),)

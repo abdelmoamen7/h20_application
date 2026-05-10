@@ -1,9 +1,10 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/assetsmanger/assetsmanger.dart';
+import '../../../core/colorsmanger/colorsmanger.dart';
 import '../../../core/resources/isvalidat.dart';
 import '../../../core/routesmanger/routesManger.dart';
 import '../../../core/utilis/Uiutills.dart';
@@ -20,22 +21,25 @@ class Register extends StatefulWidget {
   @override
   State<Register> createState() => _RegisterState();
 }
+
 class _RegisterState extends State<Register> {
-  bool securePassword = true; // this
-  late TextEditingController _namecontroller; // this
+  bool securePassword = true;
+  late TextEditingController _namecontroller;
   late TextEditingController _emailcontroller;
   late TextEditingController _passwordcontroller;
-  late TextEditingController _repasswordcontroller; //
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  late TextEditingController _repasswordcontroller;
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _namecontroller = TextEditingController();
     _emailcontroller = TextEditingController();
     _passwordcontroller = TextEditingController();
     _repasswordcontroller = TextEditingController();
-  } // this
+  }
+
+  @override
   void dispose() {
     _namecontroller.dispose();
     _emailcontroller.dispose();
@@ -46,127 +50,158 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery
-        .of(context)
-        .viewInsets);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
-        title: Text(AppLocalizations.of(context)!.register),
-
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colorsmanger.darkblue),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          AppLocalizations.of(context)!.register,
+          style: GoogleFonts.inter(
+            color: Colorsmanger.darkblue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
       ),
-
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 21, vertical: 20),
-
+      body: SafeArea(
         child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
           child: Form(
             key: formkey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image(image: AssetImage(Imagemanger.logoimage,),
-                  width: 136,
-                  height: 186,),
-                SizedBox(height: 24,),
+                Center(
+                  child: Image.asset(
+                    Imagemanger.logoimage,
+                    width: 100.w,
+                    height: 120.h,
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                Text(
+                  "Create Account",
+                  style: GoogleFonts.inter(
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colorsmanger.darkblue,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  "Join us and transform your body",
+                  style: GoogleFonts.inter(
+                    fontSize: 14.sp,
+                    color: Colorsmanger.Grey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 30.h),
                 CustomTextForm(
                   controller: _namecontroller,
                   validator: (input) {
-                    if (input == null || input
-                        .trim()
-                        .isEmpty) {
-                      return "enter the name :";
+                    if (input == null || input.trim().isEmpty) {
+                      return "Please enter your name";
                     }
+                    return null;
                   },
                   isObscure: false,
                   labelText: AppLocalizations.of(context)!.name,
-                  prefixIcon: Icons.person,),
-                SizedBox(height: 16,),
+                  prefixIcon: Icons.person_outline,
+                ),
+                SizedBox(height: 16.h),
                 CustomTextForm(
+                  controller: _emailcontroller,
                   validator: (input) {
-                    if (input == null || input
-                        .trim()
-                        .isEmpty) {
-                      return "enter the email :";
+                    if (input == null || input.trim().isEmpty) {
+                      return "Please enter your email";
                     }
+                    if (!Validator.isValidEmail(input)) {
+                      return "The email format is incorrect";
+                    }
+                    return null;
                   },
                   isObscure: false,
-                  controller: _emailcontroller,
                   keyboardType: TextInputType.emailAddress,
                   labelText: AppLocalizations.of(context)!.email,
-                  prefixIcon: Icons.email,
+                  prefixIcon: Icons.email_outlined,
                 ),
-
-                SizedBox(height: 16,),
+                SizedBox(height: 16.h),
                 CustomTextForm(
                   controller: _passwordcontroller,
-                  //You call validate() inside the ElevatedButton to check all user input before sending it to your backend or Firebase.
-                  // It’s the step that ensures all input conditions are correct.
                   validator: (input) {
-                    if (input == null || input
-                        .trim()
-                        .isEmpty) {
-                      return "the password is empty  :";
+                    if (input == null || input.trim().isEmpty) {
+                      return "Please enter a password";
                     }
-                    if (input.length < 8) {
-                      return " the password should be at least 6";
+                    if (input.length < 6) {
+                      return "Password must be at least 6 characters";
                     }
-                    if (Validator.isValidEmail(input)) {
-                      return "the email format isn't coreect ";
-                    }
+                    return null;
                   },
                   isObscure: securePassword,
                   labelText: AppLocalizations.of(context)!.password,
-                  prefixIcon: Icons.lock,
-                  suffixIcon: IconButton(onPressed: () {
-                    securePassword = !securePassword;
-                    setState(() {
-
-                    });
-                  },
-                      icon: Icon(securePassword ? Icons.visibility_off : Icons
-                          .visibility)),
-                  keyboardType: TextInputType.visiblePassword,),
-                SizedBox(height: 16,),
+                  prefixIcon: Icons.lock_outline,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        securePassword = !securePassword;
+                      });
+                    },
+                    icon: Icon(
+                      securePassword ? Icons.visibility_off : Icons.visibility,
+                      color: Colorsmanger.Grey,
+                    ),
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+                SizedBox(height: 16.h),
                 CustomTextForm(
                   controller: _repasswordcontroller,
                   validator: (input) {
-                    if (input == null || input
-                        .trim()
-                        .isEmpty) {
-                      return "the Repass-word is empty  :";
+                    if (input == null || input.trim().isEmpty) {
+                      return "Please re-enter your password";
                     }
-                    if (input.length < 8) {
-                      return " the password should be at least 6";
+                    if (input != _passwordcontroller.text) {
+                      return "Passwords do not match";
                     }
+                    return null;
                   },
                   isObscure: securePassword,
                   labelText: AppLocalizations.of(context)!.re_password,
-                  prefixIcon: Icons.lock,
-                  suffixIcon: IconButton(onPressed: () {},
-                      icon: Icon(securePassword ? Icons.visibility_off : Icons
-                          .visibility)),),
-                SizedBox(height: 16,),
+                  prefixIcon: Icons.lock_outline,
+                ),
+                SizedBox(height: 30.h),
                 Coustom_Elvated_Button(
-                    text: AppLocalizations.of(context)!.create_account,
-                    onPress: _registered),
-                SizedBox(height: 16,),
+                  text: AppLocalizations.of(context)!.create_account,
+                  onPress: _registered,
+                ),
+                SizedBox(height: 24.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppLocalizations.of(context)!.create_account,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodySmall),
-                    SizedBox(width: 10,),
+                    Text(
+                      "Already have an account?",
+                      style: GoogleFonts.inter(
+                        fontSize: 14.sp,
+                        color: Colorsmanger.Grey,
+                      ),
+                    ),
+                    SizedBox(width: 4.w),
                     CustomTextButton(
-                        texts: AppLocalizations.of(context)!.login, onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, Routesmanger.Logins);
-                    }),
+                      texts: AppLocalizations.of(context)!.login,
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, Routesmanger.Logins);
+                      },
+                    ),
                   ],
-                )
-
+                ),
+                SizedBox(height: 20.h),
               ],
             ),
           ),
@@ -176,25 +211,36 @@ class _RegisterState extends State<Register> {
   }
 
   void _registered() async {
-    FirebaseAuth.instance.currentUser;
     if (formkey.currentState?.validate() == false) return;
     try {
       uitils.ShowLoading(context);
-      UserCredential userCredential = await Fairebaeservices.registers(_emailcontroller.text, _passwordcontroller.text);
-      await  Fairebaeservices.addUasertoFireStore(UserModel(name:_namecontroller.text, id:userCredential.user!.uid, email: _emailcontroller.text,height: 0,weight: 0,caloriesTarget: 0,waterIntake: 0,streakDays: 0,age: 0,gender: "",activityLevel: "",goal: "",targetWeight: 0));
+      
+      UserCredential userCredential = await Fairebaeservices.registers(
+        _emailcontroller.text.trim(), 
+        _passwordcontroller.text,
+      );
+      
+      await Fairebaeservices.addUasertoFireStore(UserModel(
+        name: _namecontroller.text.trim(), 
+        id: userCredential.user!.uid, 
+        email: _emailcontroller.text.trim(),
+        height: 0, weight: 0, caloriesTarget: 0, waterIntake: 0,
+        streakDays: 0, age: 0, gender: "", activityLevel: "",
+        goal: "", targetWeight: 0,
+      ));
+      
+      if (!mounted) return;
       uitils.hideDialog(context);
-      uitils.ShowToastMassage("succefuly regested", Colors.green);
-      Navigator.pushReplacementNamed(context, Routesmanger.Logins);
+      
+      // Navigate straight to Onboarding after successful registration
+      Navigator.pushReplacementNamed(context, Routesmanger.Onbording);
+      
     } on FirebaseAuthException catch (e) {
       uitils.hideDialog(context);
-      uitils.ShowToastMassage(e.code, Colors.red);
+      uitils.ShowToastMassage(e.message ?? e.code, Colors.red);
     } catch (e) {
       uitils.hideDialog(context);
-      uitils.ShowToastMassage("failed to register ", Colors.red);
+      uitils.ShowToastMassage("Failed to register", Colors.red);
     }
   }
-
-
-
 }
-
