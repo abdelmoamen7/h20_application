@@ -5,14 +5,11 @@ import 'package:h20_application/fetures/mainlayout/tabs/home/home.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/nutraion/nutration.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/profile/profile.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/workout/workout.dart';
-
 import '../../core/colorsmanger/colorsmanger.dart';
 import '../../core/routesmanger/routesManger.dart';
 import '../../l10n/app_localizations.dart';
-
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
-
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -24,7 +21,7 @@ class _MainLayoutState extends State<MainLayout> {
     Home(),
     nutraion(),
     workout(),
-    profile(),
+    Profile(),
   ];
 
   int selectedIndex = 0;

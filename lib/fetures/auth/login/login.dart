@@ -16,7 +16,7 @@ import '../../../core/widget/Custom_Text_Button.dart';
 import '../../../core/widget/Custom_text_form.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/UserModel.dart';
-import '../../../services/firebaseService.dart';
+import '../../../services/FirebaseServcies/firebaseService.dart';
 
 class Login extends StatefulWidget {
 
@@ -216,7 +216,14 @@ class _LoginState extends State<Login> {
       UserCredential userCredential = await  Fairebaeservices.login(_emailcontroller.text, _passwordcontroller.text);
       UserModel.currentUser= await Fairebaeservices.getUserId(userCredential.user!.uid);
       uitils.hideDialog(context);
-      Navigator.pushReplacementNamed(context, Routesmanger.mainlayout);
+
+      // Check if user has already entered their onboarding data
+      if (UserModel.currentUser != null && UserModel.currentUser!.weight > 0) {
+        Navigator.pushReplacementNamed(context, Routesmanger.mainlayout);
+      } else {
+        Navigator.pushReplacementNamed(context, Routesmanger.Onbording);
+      }
+      
       print(" Login success, navigating now...");
     } on FirebaseAuthException catch (e) {
       uitils.hideDialog(context);

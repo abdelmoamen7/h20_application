@@ -45,6 +45,7 @@ dependencies:
   firebase_core: ^4.1.1
   fluttertoast: ^9.0.0
   cloud_firestore: ^6.0.2
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
   assets:
   - assets/images/img.png
   - assets/images/img_1.png
+  - assets/images/img_3.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

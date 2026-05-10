@@ -83,7 +83,14 @@
    "login_with_google": "Login With Google",
    "logout": "Logout",
    "name": "Name",
-   "phone": "Phone"
+   "phone": "Phone",
+   "welcome": "Welcome",
+     "welcome_back": "Welcome Back",
+     "welcome_message": "Welcome Back To Your Fitness Journey",
+     "good_morning": "Good Morning",
+     "good_evening": "Good Evening",
+     "lets_start": "Let's Start Your Journey",
+     "stay_healthy": "Stay Healthy & Stay Strong"
 
 
 }

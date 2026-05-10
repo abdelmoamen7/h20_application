@@ -208,4 +208,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get phone => 'رقم الهاتف';
+
+  @override
+  String get welcome => 'مرحبًا';
+
+  @override
+  String get welcome_back => 'مرحبًا بعودتك';
+
+  @override
+  String get welcome_message => 'مرحبًا بعودتك في رحلتك الرياضية';
+
+  @override
+  String get good_morning => 'صباح الخير';
+
+  @override
+  String get good_evening => 'مساء الخير';
+
+  @override
+  String get lets_start => 'لنبدأ رحلتك';
+
+  @override
+  String get stay_healthy => 'ابقَ صحيًا وابقَ قويًا';
 }

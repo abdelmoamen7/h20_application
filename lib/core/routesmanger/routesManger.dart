@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../fetures/auth/login/login.dart';
 import '../../fetures/auth/register/register.dart';
 import '../../fetures/mainlayout/mainlayout.dart';
+import '../../fetures/screens/onbording/onbording.dart';
 import '../../fetures/screens/splashscreen.dart';
 
 abstract class Routesmanger {
@@ -10,6 +11,7 @@ abstract class Routesmanger {
   static const String mainlayout = "/main_layout";
   static const String Registes = "/register";
   static const String Splaschreens = "/splashscreen";
+  static const String Onbording = "/onbording";
 
 
   static Map<String, WidgetBuilder> routes={
@@ -17,6 +19,7 @@ abstract class Routesmanger {
     Registes:(context)=>Register(),
     mainlayout:(context)=>MainLayout(),
     Splaschreens:(context)=>Splashscreen(),
+    Onbording:(context)=>OnBoarding(),
 
   };
 

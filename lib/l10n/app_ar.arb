@@ -83,6 +83,13 @@
     "login_with_google": "تسجيل الدخول بواسطة جوجل",
     "logout": "تسجيل الخروج",
     "name": "الاسم",
-    "phone": "رقم الهاتف"
+    "phone": "رقم الهاتف",
+     "welcome": "مرحبًا",
+      "welcome_back": "مرحبًا بعودتك",
+      "welcome_message": "مرحبًا بعودتك في رحلتك الرياضية",
+      "good_morning": "صباح الخير",
+      "good_evening": "مساء الخير",
+      "lets_start": "لنبدأ رحلتك",
+      "stay_healthy": "ابقَ صحيًا وابقَ قويًا"
 
 }

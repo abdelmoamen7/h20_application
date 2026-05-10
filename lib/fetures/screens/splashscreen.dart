@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/assetsmanger/assetsmanger.dart';
 import '../../core/colorsmanger/colorsmanger.dart';
 import '../../core/routesmanger/routesManger.dart';
+import '../../models/UserModel.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -21,10 +22,19 @@ class _SplashscreenState extends State<Splashscreen> {
 
   void navigatestate(){
     Future.delayed(Duration(seconds: 2),(){
-      Navigator.pushReplacementNamed(context, Routesmanger.Logins);
+      if (UserModel.currentUser != null) {
+        // User is logged in
+        if (UserModel.currentUser!.weight > 0) {
+          Navigator.pushReplacementNamed(context, Routesmanger.mainlayout);
+        } else {
+          Navigator.pushReplacementNamed(context, Routesmanger.Onbording);
+        }
+      } else {
+        // User not logged in
+        Navigator.pushReplacementNamed(context, Routesmanger.Logins);
+      }
     }
     );
-
   }
   @override
   Widget build(BuildContext context) {

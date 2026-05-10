@@ -208,4 +208,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get phone => 'Phone';
+
+  @override
+  String get welcome => 'Welcome';
+
+  @override
+  String get welcome_back => 'Welcome Back';
+
+  @override
+  String get welcome_message => 'Welcome Back To Your Fitness Journey';
+
+  @override
+  String get good_morning => 'Good Morning';
+
+  @override
+  String get good_evening => 'Good Evening';
+
+  @override
+  String get lets_start => 'Let\'s Start Your Journey';
+
+  @override
+  String get stay_healthy => 'Stay Healthy & Stay Strong';
 }

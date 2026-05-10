@@ -496,6 +496,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Phone'**
   String get phone;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcome;
+
+  /// No description provided for @welcome_back.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back'**
+  String get welcome_back;
+
+  /// No description provided for @welcome_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back To Your Fitness Journey'**
+  String get welcome_message;
+
+  /// No description provided for @good_morning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Morning'**
+  String get good_morning;
+
+  /// No description provided for @good_evening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Evening'**
+  String get good_evening;
+
+  /// No description provided for @lets_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s Start Your Journey'**
+  String get lets_start;
+
+  /// No description provided for @stay_healthy.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Healthy & Stay Strong'**
+  String get stay_healthy;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

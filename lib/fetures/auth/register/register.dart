@@ -12,7 +12,7 @@ import '../../../core/widget/Custom_Text_Button.dart';
 import '../../../core/widget/Custom_text_form.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/UserModel.dart';
-import '../../../services/firebaseService.dart';
+import '../../../services/FirebaseServcies/firebaseService.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -181,7 +181,7 @@ class _RegisterState extends State<Register> {
     try {
       uitils.ShowLoading(context);
       UserCredential userCredential = await Fairebaeservices.registers(_emailcontroller.text, _passwordcontroller.text);
-      await  Fairebaeservices.addUasertoFireStore(UserModel(name:_namecontroller.text, id:userCredential.user!.uid, email: _emailcontroller.text));
+      await  Fairebaeservices.addUasertoFireStore(UserModel(name:_namecontroller.text, id:userCredential.user!.uid, email: _emailcontroller.text,height: 0,weight: 0,caloriesTarget: 0,waterIntake: 0,streakDays: 0,age: 0,gender: "",activityLevel: "",goal: "",targetWeight: 0));
       uitils.hideDialog(context);
       uitils.ShowToastMassage("succefuly regested", Colors.green);
       Navigator.pushReplacementNamed(context, Routesmanger.Logins);
