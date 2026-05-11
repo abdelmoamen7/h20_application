@@ -1,29 +1,23 @@
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:h20_application/services/FirebaseServcies/firebaseService.dart';
 import 'package:provider/provider.dart';
 
 import 'core/config/ConfigProvider.dart';
 import 'core/routesmanger/routesManger.dart';
 import 'l10n/app_localizations.dart';
-import 'models/UserModel.dart';
 
-void main() async{
-
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Firebase initializes on the splash screen so runApp is not blocked
+  // (faster time-to-first-frame). See splashscreen.dart.
 
-  await  Firebase.initializeApp();
-  if(FirebaseAuth.instance.currentUser!=null){
-    UserModel.currentUser=await Fairebaeservices.getUserId(FirebaseAuth.instance.currentUser!.uid);
-  }
-  runApp(ChangeNotifierProvider(
-      create: (context)=>ConfigProvider(),
-      child: const MyApp()));
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ConfigProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

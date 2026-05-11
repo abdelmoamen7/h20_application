@@ -14,10 +14,7 @@ import 'FreeExerciseCard.dart';
 class WorkoutCard extends StatefulWidget {
   final HealthMetricsModel metrics;
 
-  const WorkoutCard({
-    super.key,
-    required this.metrics,
-  });
+  const WorkoutCard({super.key, required this.metrics});
 
   @override
   State<WorkoutCard> createState() => _WorkoutCardState();
@@ -26,12 +23,12 @@ class WorkoutCard extends StatefulWidget {
 class _WorkoutCardState extends State<WorkoutCard> {
   late Future<List<FreeExerciseModel>> _exercisesFuture;
   final WorkoutApiService _apiService = WorkoutApiService();
-  static const String _imageBaseUrl = 'https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/';
 
   @override
   void initState() {
     super.initState();
-    _exercisesFuture = _apiService.fetchExercises();
+    // Let the first frame paint before starting the network request.
+    _exercisesFuture = Future.microtask(() => _apiService.fetchExercises());
   }
 
   @override
@@ -75,9 +72,18 @@ class _WorkoutCardState extends State<WorkoutCard> {
             future: _exercisesFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator(color: Colorsmanger.Blue));
-              } else if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text("No workouts available.", style: GoogleFonts.inter(color: Colorsmanger.Grey)));
+                return Center(
+                  child: CircularProgressIndicator(color: Colorsmanger.Blue),
+                );
+              } else if (snapshot.hasError ||
+                  !snapshot.hasData ||
+                  snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No workouts available.",
+                    style: GoogleFonts.inter(color: Colorsmanger.Grey),
+                  ),
+                );
               }
 
               // Take only 3 random/first exercises for the home page
@@ -89,14 +95,15 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 itemCount: workouts.length,
                 itemBuilder: (context, index) {
                   final exercise = workouts[index];
-                  final String? gifPath = exercise.gifUrl.isNotEmpty ? exercise.gifUrl : null;
+                  final mediaUrl = exercise.previewMediaUrl;
 
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ExerciseDetails(exercise: exercise),
+                          builder: (context) =>
+                              ExerciseDetails(exercise: exercise),
                         ),
                       );
                     },
@@ -111,31 +118,43 @@ class _WorkoutCardState extends State<WorkoutCard> {
                             color: Colors.grey.withValues(alpha: 0.1),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
-                          )
+                          ),
                         ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-                            child: gifPath != null 
-                              ? Image.network(
-                                  '$_imageBaseUrl$gifPath',
-                                  height: 120.h,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (ctx, err, stack) => Container(
-                                    height: 120.h, color: Colors.grey[300],
-                                    child: Icon(Icons.fitness_center, color: Colors.grey)
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20.r),
+                            ),
+                            child: mediaUrl.isNotEmpty
+                                ? Image.network(
+                                    mediaUrl,
+                                    height: 120.h,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    gaplessPlayback: true,
+                                    filterQuality: FilterQuality.low,
+                                    errorBuilder: (ctx, err, stack) =>
+                                        Container(
+                                          height: 120.h,
+                                          color: Colors.grey[300],
+                                          child: const Icon(
+                                            Icons.fitness_center,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                  )
+                                : Container(
+                                    height: 120.h,
+                                    width: double.infinity,
+                                    color: Colors.grey[300],
+                                    child: const Icon(
+                                      Icons.fitness_center,
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                )
-                              : Container(
-                                  height: 120.h,
-                                  width: double.infinity,
-                                  color: Colors.grey[300],
-                                  child: const Icon(Icons.fitness_center, color: Colors.grey),
-                                ),
                           ),
                           Padding(
                             padding: EdgeInsets.all(15.w),
@@ -144,7 +163,8 @@ class _WorkoutCardState extends State<WorkoutCard> {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         exercise.name.toUpperCase(),
@@ -159,7 +179,12 @@ class _WorkoutCardState extends State<WorkoutCard> {
                                       SizedBox(height: 4.h),
                                       Row(
                                         children: [
-                                          Icon(Icons.local_fire_department_outlined, size: 14.sp, color: Colors.orange),
+                                          Icon(
+                                            Icons
+                                                .local_fire_department_outlined,
+                                            size: 14.sp,
+                                            color: Colors.orange,
+                                          ),
                                           SizedBox(width: 4.w),
                                           Expanded(
                                             child: Text(
@@ -185,11 +210,15 @@ class _WorkoutCardState extends State<WorkoutCard> {
                                     color: Colorsmanger.Blue,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Icon(Icons.play_arrow, color: Colors.white, size: 20.sp),
+                                  child: Icon(
+                                    Icons.play_arrow,
+                                    color: Colors.white,
+                                    size: 20.sp,
+                                  ),
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

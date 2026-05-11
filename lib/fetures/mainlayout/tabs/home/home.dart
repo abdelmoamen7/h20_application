@@ -8,7 +8,6 @@ import '../../../../core/colorsmanger/colorsmanger.dart';
 import '../../../../core/widget/MacroCard.dart';
 import '../../../../core/widget/ProgressCard.dart';
 import '../../../../core/widget/WorkoutCard.dart';
-import '../../../../l10n/app_localizations.dart';
 import '../../../../models/UserModel.dart';
 import '../../../../models/HealthMetricsModel.dart';
 

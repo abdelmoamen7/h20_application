@@ -1,13 +1,11 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/home/home.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/nutraion/nutration.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/profile/profile.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/workout/workout.dart';
 import '../../core/colorsmanger/colorsmanger.dart';
-import '../../core/routesmanger/routesManger.dart';
 import '../../l10n/app_localizations.dart';
+
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
 
@@ -16,15 +14,25 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-
-  final List<Widget> tab = [
-    Home(),
-    NutritionScreen(),
-    workout(),
-    Profile(),
-  ];
+  static const int _tabCount = 4;
 
   int selectedIndex = 0;
+
+  /// Build only the visible tab so Workout/Nutrition network work does not run at startup.
+  Widget _pageFor(int index) {
+    switch (index) {
+      case 0:
+        return const Home();
+      case 1:
+        return const NutritionScreen();
+      case 2:
+        return const workout();
+      case 3:
+        return const Profile();
+      default:
+        return const Home();
+    }
+  }
 
   void _onTap(int newIndex) {
     setState(() {
@@ -34,10 +42,9 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations? appLocalizations = AppLocalizations.of(context);
     return Scaffold(
       extendBody: true,
-      body: tab[selectedIndex],
+      body: _pageFor(selectedIndex),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // floatingActionButton: _buildFloatingActionButton(),
       bottomNavigationBar: _buildCustomBottomNavigationBar(),
@@ -75,7 +82,7 @@ class _MainLayoutState extends State<MainLayout> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(tab.length, (index) {
+          children: List.generate(_tabCount, (index) {
             bool isSelected = selectedIndex == index;
             IconData icon = _getIcon(index);
             String label = _getLabel(index, context);

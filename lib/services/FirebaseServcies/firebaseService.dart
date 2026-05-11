@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:h20_application/models/HealthMetricsModel.dart';
 import '../../models/HealthMetricsModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/nutrition_model.dart';
@@ -60,6 +59,17 @@ class Fairebaeservices{
     return nutraiondocumnet.set(nutration);
   }
 
+
+/// Loads [UserModel.currentUser] when already signed in; safe to unawait after [Firebase.initializeApp].
+  static Future<void> prefetchCurrentUserProfile() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      UserModel.currentUser = await getUserId(uid);
+    } catch (_) {
+      // Non-fatal: Home uses streamCurrentUser; login sets user.
+    }
+  }
 
 /// geting the user by id
   static  getUserId(String id)async {

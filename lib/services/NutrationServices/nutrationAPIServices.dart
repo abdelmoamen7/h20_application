@@ -188,7 +188,7 @@ class NutritionApiService {
 
         /// =====================
         /// ESTIMATE CALORIES
-        /// =====================
+        /// ==================
 
         if(calories <= 0){
 
@@ -248,6 +248,9 @@ class NutritionApiService {
           _parseDouble(
             food["cholesterol_mg"],
           ),
+
+          /// Legacy API Ninjas path; new UI uses USDA/OpenFoodFacts instead.
+          source: 'API Ninjas',
         );
       }
 

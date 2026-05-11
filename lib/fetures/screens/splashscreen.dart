@@ -1,9 +1,14 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../core/assetsmanger/assetsmanger.dart';
 import '../../core/colorsmanger/colorsmanger.dart';
 import '../../core/routesmanger/routesManger.dart';
+import '../../services/FirebaseServcies/firebaseService.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -20,16 +25,26 @@ class _SplashscreenState extends State<Splashscreen> {
   }
 
   void navigatestate() async {
-    await Future.delayed(const Duration(seconds: 2));
+    // Prefs + Firebase in parallel after first paint (main no longer awaits Firebase).
+    final boot = await Future.wait<Object?>([
+      SharedPreferences.getInstance(),
+      Firebase.apps.isEmpty
+          ? Firebase.initializeApp()
+          : Future<FirebaseApp>.value(Firebase.app()),
+    ]);
+    final prefs = boot[0] as SharedPreferences;
 
     if (!mounted) return;
 
-    User? firebaseUser = FirebaseAuth.instance.currentUser;
+    // Warm profile cache without blocking navigation.
+    unawaited(Fairebaeservices.prefetchCurrentUserProfile());
+
+    final User? firebaseUser = FirebaseAuth.instance.currentUser;
 
     if (firebaseUser != null) {
       // User is authenticated in Firebase
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool onboardingCompleted = prefs.getBool('onboardingCompleted') ?? false;
+      final bool onboardingCompleted =
+          prefs.getBool('onboardingCompleted') ?? false;
 
       if (onboardingCompleted) {
         Navigator.pushReplacementNamed(context, Routesmanger.mainlayout);
