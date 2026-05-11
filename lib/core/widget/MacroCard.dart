@@ -11,20 +11,25 @@ import '../colorsmanger/colorsmanger.dart';
 
 class MacroCard extends StatelessWidget {
   final HealthMetricsModel metrics;
+  final VoidCallback? onTap;
+  final VoidCallback? onLogMeal;
 
   const MacroCard({
     super.key,
     required this.metrics,
+    this.onTap,
+    this.onLogMeal,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final radius = BorderRadius.circular(20.r);
+    final card = Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: radius,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.1),
@@ -91,18 +96,22 @@ class MacroCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                  decoration: BoxDecoration(
-                    color: Colorsmanger.Blue,
+                Material(
+                  color: Colorsmanger.Blue,
+                  borderRadius: BorderRadius.circular(20.r),
+                  child: InkWell(
+                    onTap: onLogMeal,
                     borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Text(
-                    "Log Meal",
-                    style: GoogleFonts.inter(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      child: Text(
+                        "Log Meal",
+                        style: GoogleFonts.inter(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 )
@@ -110,6 +119,17 @@ class MacroCard extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+
+    if (onTap == null) return card;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: radius,
+        child: card,
       ),
     );
   }

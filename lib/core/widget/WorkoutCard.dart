@@ -13,8 +13,9 @@ import 'FreeExerciseCard.dart';
 
 class WorkoutCard extends StatefulWidget {
   final HealthMetricsModel metrics;
+  final VoidCallback? onSeeAll;
 
-  const WorkoutCard({super.key, required this.metrics});
+  const WorkoutCard({super.key, required this.metrics, this.onSeeAll});
 
   @override
   State<WorkoutCard> createState() => _WorkoutCardState();
@@ -50,9 +51,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 ),
               ),
               InkWell(
-                onTap: () {
-                  // Navigate to Workout tab (handled by bottom nav usually)
-                },
+                onTap: widget.onSeeAll,
                 child: Text(
                   "See All",
                   style: GoogleFonts.inter(

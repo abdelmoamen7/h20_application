@@ -5,6 +5,7 @@ import 'package:h20_application/fetures/mainlayout/tabs/profile/profile.dart';
 import 'package:h20_application/fetures/mainlayout/tabs/workout/workout.dart';
 import '../../core/colorsmanger/colorsmanger.dart';
 import '../../l10n/app_localizations.dart';
+import 'main_tab_scope.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -40,14 +41,24 @@ class _MainLayoutState extends State<MainLayout> {
     });
   }
 
+  void _goToTab(int index) {
+    if (index < 0 || index >= _tabCount) return;
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: _pageFor(selectedIndex),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: _buildFloatingActionButton(),
-      bottomNavigationBar: _buildCustomBottomNavigationBar(),
+    return MainTabScope(
+      goToTab: _goToTab,
+      child: Scaffold(
+        extendBody: true,
+        body: _pageFor(selectedIndex),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: _buildFloatingActionButton(),
+        bottomNavigationBar: _buildCustomBottomNavigationBar(),
+      ),
     );
   }
 

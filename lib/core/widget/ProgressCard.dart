@@ -11,20 +11,23 @@ import '../colorsmanger/colorsmanger.dart';
 
 class ProgressCard extends StatelessWidget {
   final HealthMetricsModel metrics;
+  final VoidCallback? onTap;
 
   const ProgressCard({
     super.key,
     required this.metrics,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final radius = BorderRadius.circular(20.r);
+    final card = Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: radius,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.1),
@@ -108,6 +111,17 @@ class ProgressCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+
+    if (onTap == null) return card;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: radius,
+        child: card,
       ),
     );
   }

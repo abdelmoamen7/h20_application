@@ -5,13 +5,17 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/Providers/CalculationProvider.dart';
 import '../../../../core/colorsmanger/colorsmanger.dart';
 
+import '../../../../core/widget/FreeExerciseCard.dart';
 import '../../../../core/widget/MacroCard.dart';
 import '../../../../core/widget/ProgressCard.dart';
 import '../../../../core/widget/WorkoutCard.dart';
+import '../../../../models/FreeExerciseModel.dart';
 import '../../../../models/UserModel.dart';
 import '../../../../models/HealthMetricsModel.dart';
 
 import '../../../../services/FirebaseServcies/firebaseService.dart';
+import '../../../../services/WorkoutServcies/WorkoutApiService.dart';
+import '../../main_tab_scope.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,6 +25,160 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  static const int _tabNutrition = 1;
+  static const int _tabWorkout = 2;
+  static const int _tabProfile = 3;
+
+  void _goNutrition(BuildContext context) =>
+      MainTabScope.goTo(context, _tabNutrition);
+
+  void _goWorkout(BuildContext context) => MainTabScope.goTo(context, _tabWorkout);
+
+  void _goProfile(BuildContext context) => MainTabScope.goTo(context, _tabProfile);
+
+  void _showNotificationsSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.fromLTRB(24.w, 20.h, 24.w, 24.h + MediaQuery.paddingOf(ctx).bottom),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Notifications',
+              style: GoogleFonts.inter(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: Colorsmanger.darkblue,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              "You're all caught up. Workout reminders and meal tips will appear here.",
+              style: GoogleFonts.inter(fontSize: 14.sp, color: Colorsmanger.Grey, height: 1.4),
+            ),
+            SizedBox(height: 20.h),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () => Navigator.pop(ctx),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colorsmanger.Blue,
+                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                ),
+                child: Text('OK', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showMotivationSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (ctx) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.45,
+        minChildSize: 0.3,
+        maxChildSize: 0.85,
+        builder: (_, scrollController) => ListView(
+          controller: scrollController,
+          padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h + MediaQuery.paddingOf(ctx).bottom),
+          children: [
+            Text(
+              'Stay motivated',
+              style: GoogleFonts.inter(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: Colorsmanger.darkblue,
+              ),
+            ),
+            SizedBox(height: 16.h),
+            _motivationTip('Consistency beats intensity — show up today, even for 10 minutes.'),
+            _motivationTip('Track meals in Nutrition to see how fuel matches your goals.'),
+            _motivationTip('Small wins add up: one extra glass of water, one walk, one healthy meal.'),
+            SizedBox(height: 12.h),
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                _goWorkout(context);
+              },
+              style: FilledButton.styleFrom(backgroundColor: Colorsmanger.Blue),
+              child: Text('Go to workouts', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _motivationTip(String text) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.check_circle_outline, color: Colorsmanger.Blue, size: 22.sp),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.inter(fontSize: 14.sp, color: Colorsmanger.Grey, height: 1.45),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _openQuickExercise(BuildContext context, String label) async {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const Center(child: CircularProgressIndicator()),
+    );
+    try {
+      final list = await WorkoutApiService().fetchExercises();
+      final q = label.toLowerCase().replaceAll('-', ' ');
+      FreeExerciseModel? match;
+      for (final e in list) {
+        final n = e.name.toLowerCase();
+        if (n.contains(q) || q.split(' ').where((w) => w.isNotEmpty).every((w) => n.contains(w))) {
+          match = e;
+          break;
+        }
+      }
+      if (!context.mounted) return;
+      Navigator.of(context, rootNavigator: true).pop();
+      if (match != null) {
+        await Navigator.push<void>(
+          context,
+          MaterialPageRoute<void>(builder: (_) => ExerciseDetails(exercise: match!)),
+        );
+      } else {
+        _goWorkout(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Browse Workouts to find "$label".')),
+        );
+      }
+    } catch (_) {
+      if (context.mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
+        _goWorkout(context);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<UserModel?>(
@@ -48,19 +206,29 @@ class _HomeState extends State<Home> {
               _buildDailyProgressGrid(user, metrics),
               SizedBox(height: 25.h),
 
-              ProgressCard(metrics: metrics), // BMI / Health Summary
+              ProgressCard(
+                metrics: metrics,
+                onTap: () => _goProfile(context),
+              ),
               SizedBox(height: 25.h),
               
-              WorkoutCard(metrics: metrics), // Today's Workouts
+              WorkoutCard(
+                metrics: metrics,
+                onSeeAll: () => _goWorkout(context),
+              ),
               SizedBox(height: 25.h),
               
-              MacroCard(metrics: metrics), // Nutrition Section
+              MacroCard(
+                metrics: metrics,
+                onTap: () => _goNutrition(context),
+                onLogMeal: () => _goNutrition(context),
+              ),
               SizedBox(height: 25.h),
               
-              _buildRecommendedExercises(),
+              _buildRecommendedExercises(context),
               SizedBox(height: 25.h),
 
-              _buildMotivationBanner(),
+              _buildMotivationBanner(context),
               SizedBox(height: 120.h), // padding for floating nav bar
             ],
           ),
@@ -90,22 +258,29 @@ class _HomeState extends State<Home> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 32.r,
-            backgroundColor: Colors.white.withValues(alpha: 0.2),
-            backgroundImage: user.profileImage != null && user.profileImage!.isNotEmpty
-                ? NetworkImage(user.profileImage!)
-                : null,
-            child: user.profileImage == null || user.profileImage!.isEmpty
-                ? Text(
-                    user.name.isNotEmpty ? user.name[0].toUpperCase() : 'U',
-                    style: GoogleFonts.inter(
-                      fontSize: 26.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  )
-                : null,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _goProfile(context),
+              customBorder: const CircleBorder(),
+              child: CircleAvatar(
+                radius: 32.r,
+                backgroundColor: Colors.white.withValues(alpha: 0.2),
+                backgroundImage: user.profileImage != null && user.profileImage!.isNotEmpty
+                    ? NetworkImage(user.profileImage!)
+                    : null,
+                child: user.profileImage == null || user.profileImage!.isEmpty
+                    ? Text(
+                        user.name.isNotEmpty ? user.name[0].toUpperCase() : 'U',
+                        style: GoogleFonts.inter(
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      )
+                    : null,
+              ),
+            ),
           ),
           SizedBox(width: 15.w),
           Expanded(
@@ -144,7 +319,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () => _showNotificationsSheet(context),
             borderRadius: BorderRadius.circular(20.r),
             child: Container(
               padding: EdgeInsets.all(12.w),
@@ -193,17 +368,49 @@ class _HomeState extends State<Home> {
           SizedBox(height: 15.h),
           Row(
             children: [
-              Expanded(child: _buildGridCard("Calories", "${metrics.calories} kcal", Icons.local_fire_department, 0.7)),
+              Expanded(
+                child: _buildGridCard(
+                  "Calories",
+                  "${metrics.calories} kcal",
+                  Icons.local_fire_department,
+                  0.7,
+                  () => _goNutrition(context),
+                ),
+              ),
               SizedBox(width: 15.w),
-              Expanded(child: _buildGridCard("Water", metrics.waterTargetText, Icons.water_drop, 0.4)),
+              Expanded(
+                child: _buildGridCard(
+                  "Water",
+                  metrics.waterTargetText,
+                  Icons.water_drop,
+                  0.4,
+                  () => _goNutrition(context),
+                ),
+              ),
             ],
           ),
           SizedBox(height: 15.h),
           Row(
             children: [
-              Expanded(child: _buildGridCard("Streak", "${user.streakDays} Days", Icons.local_fire_department_outlined, user.streakDays > 0 ? 1.0 : 0.0)),
+              Expanded(
+                child: _buildGridCard(
+                  "Streak",
+                  "${user.streakDays} Days",
+                  Icons.local_fire_department_outlined,
+                  user.streakDays > 0 ? 1.0 : 0.0,
+                  () => _goProfile(context),
+                ),
+              ),
               SizedBox(width: 15.w),
-              Expanded(child: _buildGridCard("Goal", user.goal.replaceAll('_', ' ').toUpperCase(), Icons.flag_outlined, metrics.goalProgress)),
+              Expanded(
+                child: _buildGridCard(
+                  "Goal",
+                  user.goal.replaceAll('_', ' ').toUpperCase(),
+                  Icons.flag_outlined,
+                  metrics.goalProgress,
+                  () => _goProfile(context),
+                ),
+              ),
             ],
           ),
         ],
@@ -211,7 +418,13 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildGridCard(String title, String value, IconData icon, double progress) {
+  Widget _buildGridCard(
+    String title,
+    String value,
+    IconData icon,
+    double progress,
+    VoidCallback onTap,
+  ) {
     // Select an emoji based on the title to serve as a nice graphic shape
     String graphicEmoji = "✨";
     if (title.contains("Calories")) graphicEmoji = "🔥";
@@ -219,7 +432,13 @@ class _HomeState extends State<Home> {
     if (title.contains("Streak")) graphicEmoji = "⚡";
     if (title.contains("Goal")) graphicEmoji = "🎯";
 
-    return Container(
+    final radius = BorderRadius.circular(20.r);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: radius,
+        child: Container(
       height: 140.h,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -227,7 +446,7 @@ class _HomeState extends State<Home> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: radius,
         boxShadow: [
           BoxShadow(
             color: Colorsmanger.Blue.withValues(alpha: 0.3),
@@ -335,11 +554,19 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
+        ),
+      ),
     );
   }
 
-  Widget _buildMotivationBanner() {
-    return Container(
+  Widget _buildMotivationBanner(BuildContext context) {
+    final radius = BorderRadius.circular(25.r);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => _showMotivationSheet(context),
+        borderRadius: radius,
+        child: Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       padding: EdgeInsets.all(25.w),
       decoration: BoxDecoration(
@@ -348,7 +575,7 @@ class _HomeState extends State<Home> {
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
-        borderRadius: BorderRadius.circular(25.r),
+        borderRadius: radius,
         boxShadow: [
           BoxShadow(
             color: Colorsmanger.darkblue.withValues(alpha: 0.4),
@@ -374,10 +601,12 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
+        ),
+      ),
     );
   }
 
-  Widget _buildRecommendedExercises() {
+  Widget _buildRecommendedExercises(BuildContext context) {
     final List<Map<String, String>> exercises = [
       {"name": "Squats", "target": "Legs", "image": "https://images.unsplash.com/photo-1566241440091-ec10ee8f6b14?auto=format&fit=crop&w=400&q=80"},
       {"name": "Push-ups", "target": "Chest", "image": "https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=400&q=80"},
@@ -389,19 +618,29 @@ class _HomeState extends State<Home> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Quick Exercises",
-                style: GoogleFonts.inter(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colorsmanger.darkblue,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _goWorkout(context),
+              borderRadius: BorderRadius.circular(12.r),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Quick Exercises",
+                      style: GoogleFonts.inter(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700,
+                        color: Colorsmanger.darkblue,
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward_ios, size: 14.sp, color: Colorsmanger.Blue),
+                  ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, size: 14.sp, color: Colorsmanger.Blue),
-            ],
+            ),
           ),
         ),
         SizedBox(height: 15.h),
@@ -413,12 +652,19 @@ class _HomeState extends State<Home> {
             itemCount: exercises.length,
             itemBuilder: (context, index) {
               final ex = exercises[index];
-              return Container(
+              final name = ex["name"]!;
+              final cardRadius = BorderRadius.circular(20.r);
+              return Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => _openQuickExercise(context, name),
+                  borderRadius: cardRadius,
+                  child: Container(
                 width: 120.w,
                 margin: EdgeInsets.symmetric(horizontal: 5.w),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.r),
+                  borderRadius: cardRadius,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withValues(alpha: 0.1),
@@ -463,6 +709,8 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ],
+                ),
+                  ),
                 ),
               );
             },
