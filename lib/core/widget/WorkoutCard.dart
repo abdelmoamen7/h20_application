@@ -5,12 +5,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../models/HealthMetricsModel.dart';
 import '../../../../models/FreeExerciseModel.dart';
 import '../../../../services/WorkoutServcies/WorkoutApiService.dart';
-import '../../fetures/mainlayout/tabs/workout/ExerciseDetails.dart';
 import '../colorsmanger/colorsmanger.dart';
+import 'FreeExerciseCard.dart';
 
 class WorkoutCard extends StatefulWidget {
   final HealthMetricsModel metrics;

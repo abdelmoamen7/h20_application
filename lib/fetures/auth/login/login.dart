@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                   child: CustomTextButton(
                     texts: AppLocalizations.of(context)!.forget_password,
                     onTap: () {
-                      // Handle forgot password
+                      Navigator.pushReplacementNamed(context, Routesmanger.forgetPassword);
                     },
                   ),
                 ),

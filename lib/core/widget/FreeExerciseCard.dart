@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../models/FreeExerciseModel.dart';
-import '../../fetures/mainlayout/tabs/workout/ExerciseDetails.dart';
-
-class FreeExerciseCard extends StatelessWidget {
+class ExerciseDetails extends StatelessWidget {
   final FreeExerciseModel exercise;
   static const String _imageBaseUrl = 'https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/';
 
-  const FreeExerciseCard({super.key, required this.exercise});
+  const ExerciseDetails({super.key, required this.exercise});
 
   @override
   Widget build(BuildContext context) {

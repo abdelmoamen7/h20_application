@@ -11,10 +11,10 @@ class workout extends StatefulWidget {
   const workout({super.key});
 
   @override
-  State<workout> createState() => _workoutState();
+  State<workout> createState() => workoutState();
 }
 
-class _workoutState extends State<workout> {
+class workoutState extends State<workout> {
   late Future<List<FreeExerciseModel>> _exercisesFuture;
   final WorkoutApiService _apiService = WorkoutApiService();
 
@@ -23,6 +23,7 @@ class _workoutState extends State<workout> {
     super.initState();
     _exercisesFuture = _apiService.fetchExercises();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +106,7 @@ class _workoutState extends State<workout> {
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        return FreeExerciseCard(exercise: exercises[index]);
+                        return ExerciseDetails(exercise: exercises[index]);
                       },
                       childCount: exercises.length,
                     ),

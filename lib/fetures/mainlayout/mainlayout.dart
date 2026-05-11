@@ -19,7 +19,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List<Widget> tab = [
     Home(),
-    nutraion(),
+    NutritionScreen(),
     workout(),
     Profile(),
   ];

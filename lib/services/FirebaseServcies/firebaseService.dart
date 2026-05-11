@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:h20_application/models/HealthMetricsModel.dart';
 import '../../models/HealthMetricsModel.dart';
 import '../../models/UserModel.dart';
+import '../../models/nutrition_model.dart';
 class Fairebaeservices{
   static Future<UserCredential> registers(String email, String password) async {
     /// this way to make the  user to Register  using the  sign in user and password by firebase  by user and password
@@ -47,6 +48,16 @@ class Fairebaeservices{
     );
     DocumentReference<HealthMetricsModel> HealthDocument = HealthMetricscollection.doc(HealthMetrics.id);
     return HealthDocument.set(HealthMetrics);
+  }
+
+  static addnutraionDatatofirstore( NutritionModel nutration) {
+    FirebaseFirestore db=FirebaseFirestore.instance;
+    CollectionReference<NutritionModel> nutrationscollection = db.collection("nutration").withConverter<NutritionModel>(
+      fromFirestore: (snapshot, _) =>NutritionModel .fromJson(snapshot.data()!),
+      toFirestore: (nutration, _) => nutration.toJson(),
+    );
+    DocumentReference<NutritionModel> nutraiondocumnet = nutrationscollection.doc(nutration.id);
+    return nutraiondocumnet.set(nutration);
   }
 
 
