@@ -1,7 +1,3 @@
-/// ===============================
-/// TODAY WORKOUT SECTION
-/// ===============================
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +5,7 @@ import '../../../../models/HealthMetricsModel.dart';
 import '../../../../models/FreeExerciseModel.dart';
 import '../../../../services/WorkoutServcies/WorkoutApiService.dart';
 import '../colorsmanger/colorsmanger.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'FreeExerciseCard.dart';
 
 class WorkoutCard extends StatefulWidget {
@@ -43,7 +40,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Today's Workouts",
+                AppLocalizations.of(context)!.todays_workouts,
                 style: GoogleFonts.inter(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
@@ -53,7 +50,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
               InkWell(
                 onTap: widget.onSeeAll,
                 child: Text(
-                  "See All",
+                  AppLocalizations.of(context)!.see_all,
                   style: GoogleFonts.inter(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
@@ -79,7 +76,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                   snapshot.data!.isEmpty) {
                 return Center(
                   child: Text(
-                    "No workouts available.",
+                    AppLocalizations.of(context)!.no_workouts_available,
                     style: GoogleFonts.inter(color: Colorsmanger.Grey),
                   ),
                 );

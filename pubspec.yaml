@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore: ^6.0.2
   http: ^1.6.0
   image_picker: 1.2.1
+  google_sign_in: ^6.2.2
   google_generative_ai: ^0.4.6
   dio: ^5.9.2
   mobile_scanner: ^7.2.0

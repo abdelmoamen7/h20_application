@@ -8,225 +8,207 @@ import 'app_localizations.dart';
 class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
-  @override
-  String get nutrition => 'Nutrition';
-
-  @override
-  String get nutrition_plan => 'Nutrition Plan';
-
-  @override
-  String get nutrition_details => 'Nutrition Details';
-
-  @override
-  String get daily_nutrition => 'Daily Nutrition';
-
-  @override
-  String get nutrition_goal => 'Nutrition Goal';
-
-  @override
-  String get workout => 'Workout';
-
-  @override
-  String get workouts => 'Workouts';
-
-  @override
-  String get workout_plan => 'Workout Plan';
-
-  @override
-  String get workout_details => 'Workout Details';
-
-  @override
-  String get daily_workout => 'Daily Workout';
-
-  @override
-  String get weekly_workout => 'Weekly Workout';
-
-  @override
-  String get start_workout => 'Start Workout';
-
-  @override
-  String get complete_workout => 'Complete Workout';
-
-  @override
-  String get workout_completed => 'Workout Completed';
-
-  @override
-  String get exercise => 'Exercise';
-
-  @override
-  String get exercises => 'Exercises';
-
-  @override
-  String get push_workout => 'Push Workout';
-
-  @override
-  String get pull_workout => 'Pull Workout';
-
-  @override
-  String get legs_workout => 'Legs Workout';
-
-  @override
-  String get cardio_workout => 'Cardio Workout';
-
-  @override
-  String get full_body_workout => 'Full Body Workout';
-
-  @override
-  String get workout_duration => 'Workout Duration';
-
-  @override
-  String get workout_level => 'Workout Level';
-
-  @override
-  String get beginner => 'Beginner';
-
-  @override
-  String get intermediate => 'Intermediate';
-
-  @override
-  String get advanced => 'Advanced';
-
-  @override
-  String get meal_plan => 'Meal Plan';
-
-  @override
-  String get meal_details => 'Meal Details';
-
-  @override
-  String get meal_category => 'Meal Category';
-
-  @override
-  String get healthy_food => 'Healthy Food';
-
-  @override
-  String get recommended_meals => 'Recommended Meals';
-
-  @override
-  String get calories => 'Calories';
-
-  @override
-  String get protein => 'Protein';
-
-  @override
-  String get carbohydrates => 'Carbohydrates';
-
-  @override
-  String get fats => 'Fats';
-
-  @override
-  String get water_goal => 'Water Goal';
-
-  @override
-  String get water_tracker => 'Water Tracker';
-
-  @override
-  String get body_analysis => 'Body Analysis';
-
-  @override
-  String get fitness_goal => 'Fitness Goal';
-
-  @override
-  String get muscle_gain => 'Muscle Gain';
-
-  @override
-  String get fat_loss => 'Fat Loss';
-
-  @override
-  String get track_progress => 'Track Progress';
-
-  @override
-  String get exercise_details => 'Exercise Details';
-
-  @override
-  String get watch_video => 'Watch Video';
-
-  @override
-  String get sets => 'Sets';
-
-  @override
-  String get reps => 'Reps';
-
-  @override
-  String get rest_time => 'Rest Time';
-
-  @override
-  String get search_exercise => 'Search Exercise';
-
-  @override
-  String get search_meal => 'Search Meal';
-
-  @override
-  String get favorite_meals => 'Favorite Meals';
-
-  @override
-  String get favorite_exercises => 'Favorite Exercises';
-
-  @override
-  String get home => 'Home';
-
-  @override
-  String get profile => 'Profile';
-
-  @override
-  String get register => 'Register';
-
-  @override
-  String get login => 'Login';
-
-  @override
-  String get create_account => 'Create Account';
-
-  @override
-  String get already_have_account => 'Already Have Account?';
-
-  @override
-  String get dont_have_account => 'Don\'t Have Account?';
-
-  @override
-  String get email => 'Email';
-
-  @override
-  String get password => 'Password';
-
-  @override
-  String get re_password => 'Re-Password';
-
-  @override
-  String get forget_password => 'Forget Password';
-
-  @override
-  String get reset_password => 'Reset Password';
-
-  @override
-  String get login_with_google => 'Login With Google';
-
-  @override
-  String get logout => 'Logout';
-
-  @override
-  String get name => 'Name';
-
-  @override
-  String get phone => 'Phone';
-
-  @override
-  String get welcome => 'Welcome';
-
-  @override
-  String get welcome_back => 'Welcome Back';
-
-  @override
-  String get welcome_message => 'Welcome Back To Your Fitness Journey';
-
-  @override
-  String get good_morning => 'Good Morning';
-
-  @override
-  String get good_evening => 'Good Evening';
-
-  @override
-  String get lets_start => 'Let\'s Start Your Journey';
-
-  @override
-  String get stay_healthy => 'Stay Healthy & Stay Strong';
+  @override String get home => 'Home';
+  @override String get profile => 'Profile';
+  @override String get nutrition => 'Nutrition';
+  @override String get workout => 'Workout';
+  @override String get workouts => 'Workouts';
+
+  @override String get register => 'Register';
+  @override String get login => 'Login';
+  @override String get create_account => 'Create Account';
+  @override String get already_have_account => 'Already have an account?';
+  @override String get dont_have_account => "Don't have an account?";
+  @override String get email => 'Email';
+  @override String get password => 'Password';
+  @override String get re_password => 'Re-Password';
+  @override String get forget_password => 'Forget Password';
+  @override String get reset_password => 'Reset Password';
+  @override String get login_with_google => 'Continue with Google';
+  @override String get logout => 'Logout';
+  @override String get name => 'Name';
+  @override String get phone => 'Phone';
+  @override String get welcome => 'Welcome';
+  @override String get welcome_back => 'Welcome Back';
+  @override String get welcome_message => 'Sign in to continue your fitness journey';
+  @override String get join_us => 'Join us and transform your body';
+  @override String get or => 'OR';
+  @override String get enter_your_email => 'Enter your email';
+  @override String get reset_password_subtitle => 'We will send you a link to reset your password.';
+  @override String get send_reset_link => 'Send reset link';
+
+  @override String get val_enter_name => 'Please enter your name';
+  @override String get val_enter_email => 'Please enter your email';
+  @override String get val_invalid_email => 'The email format is incorrect';
+  @override String get val_enter_password => 'Please enter a password';
+  @override String get val_password_short => 'Password must be at least 6 characters';
+  @override String get val_reenter_password => 'Please re-enter your password';
+  @override String get val_passwords_mismatch => 'Passwords do not match';
+  @override String get val_enter_age => 'Enter valid age';
+  @override String get val_enter_weight => 'Enter weight';
+  @override String get val_enter_target_weight => 'Enter target weight';
+  @override String get val_enter_height => 'Enter height';
+  @override String get val_enter_calories => 'Enter calories';
+  @override String get val_choose_gender => 'Choose gender';
+  @override String get val_choose_goal => 'Choose goal';
+  @override String get val_choose_activity => 'Choose activity level';
+  @override String get val_enter_email_short => 'Enter the email';
+  @override String get val_invalid_email_short => "The email format isn't correct";
+
+  @override String get failed_register => 'Failed to register';
+  @override String get failed_login => 'Failed to Login';
+  @override String get failed_google => 'Google sign-in failed';
+  @override String get failed_save => 'Failed To Save Information';
+  @override String get please_login_again => 'Please Login Again';
+  @override String get info_saved => 'Information Saved';
+  @override String get reset_link_sent => 'Password reset link sent to your email.';
+  @override String get failed_reset => 'Failed to send password reset email.';
+
+  @override String get personal_information => 'Personal Information';
+  @override String get personalize_journey => "Let's personalize your fitness journey.";
+  @override String get age => 'Age';
+  @override String get weight_kg => 'Weight (kg)';
+  @override String get target_weight_kg => 'Target Weight (kg)';
+  @override String get height_cm => 'Height (cm)';
+  @override String get calories_target => 'Calories Target';
+  @override String get gender => 'Gender';
+  @override String get goal => 'Goal';
+  @override String get activity_level => 'Activity Level';
+  @override String get continue_btn => 'Continue';
+  @override String get male => 'Male';
+  @override String get female => 'Female';
+  @override String get lose_weight => 'Lose Weight';
+  @override String get gain_muscle => 'Gain Muscle';
+  @override String get stay_fit => 'Stay Fit';
+  @override String get moderate => 'Moderate';
+
+  @override String get good_morning => 'Good Morning';
+  @override String get good_evening => 'Good Evening';
+  @override String get good_morning_greeting => 'Good Morning, 👋';
+  @override String get ready_to_crush => 'Ready to crush your goals today?';
+  @override String get daily_progress => 'Daily Progress';
+  @override String get streak => 'Streak';
+  @override String get days => 'Days';
+  @override String get quick_exercises => 'Quick Exercises';
+  @override String get motivation_quote => 'Push Yourself, Because No One Else Will Do It For You.';
+  @override String get no_user_data => 'No User Data';
+  @override String get browse_workouts_hint => 'Browse Workouts to find this exercise.';
+  @override String get notifications => 'Notifications';
+  @override String get notifications_empty => "You're all caught up. Workout reminders and meal tips will appear here.";
+  @override String get ok => 'OK';
+  @override String get stay_motivated => 'Stay motivated';
+  @override String get motivation_tip1 => 'Consistency beats intensity — show up today, even for 10 minutes.';
+  @override String get motivation_tip2 => 'Track meals in Nutrition to see how fuel matches your goals.';
+  @override String get motivation_tip3 => 'Small wins add up: one extra glass of water, one walk, one healthy meal.';
+  @override String get go_to_workouts => 'Go to workouts';
+  @override String get lets_start => "Let's Start Your Journey";
+  @override String get stay_healthy => 'Stay Healthy & Stay Strong';
+
+  @override String get nutrition_plan => 'Nutrition Plan';
+  @override String get nutrition_details => 'Nutrition Details';
+  @override String get daily_nutrition => 'Daily Nutrition';
+  @override String get nutrition_goal => 'Nutrition Goal';
+  @override String get workout_plan => 'Workout Plan';
+  @override String get workout_details => 'Workout Details';
+  @override String get daily_workout => 'Daily Workout';
+  @override String get weekly_workout => 'Weekly Workout';
+  @override String get start_workout => 'Start Workout';
+  @override String get complete_workout => 'Complete Workout';
+  @override String get workout_completed => 'Workout Completed';
+  @override String get exercise => 'Exercise';
+  @override String get exercises => 'Exercises';
+  @override String get push_workout => 'Push Workout';
+  @override String get pull_workout => 'Pull Workout';
+  @override String get legs_workout => 'Legs Workout';
+  @override String get cardio_workout => 'Cardio Workout';
+  @override String get full_body_workout => 'Full Body Workout';
+  @override String get workout_duration => 'Workout Duration';
+  @override String get workout_level => 'Workout Level';
+  @override String get beginner => 'Beginner';
+  @override String get intermediate => 'Intermediate';
+  @override String get advanced => 'Advanced';
+  @override String get todays_workouts => "Today's Workouts";
+  @override String get see_all => 'See All';
+  @override String get no_workouts_available => 'No workouts available.';
+  @override String get discover_workouts => 'Discover Workouts';
+  @override String get error_loading_workouts => 'Error loading workouts';
+  @override String get retry => 'Retry';
+  @override String get no_workouts_found => 'No workouts found.';
+  @override String get no_instructions => 'No instructions provided.';
+  @override String get back_to_workout => 'Back to Workout';
+  @override String get instructions => 'Instructions';
+
+  @override String get meal_plan => 'Meal Plan';
+  @override String get meal_details => 'Meal Details';
+  @override String get meal_category => 'Meal Category';
+  @override String get healthy_food => 'Healthy Food';
+  @override String get recommended_meals => 'Recommended Meals';
+  @override String get recommended_meal => 'Recommended Meal';
+  @override String get view_meal => 'View Meal';
+  @override String get calories => 'Calories';
+  @override String get protein => 'Protein';
+  @override String get carbohydrates => 'Carbohydrates';
+  @override String get fats => 'Fats';
+  @override String get carbs => 'Carbs';
+  @override String get fat => 'Fat';
+  @override String get sugar => 'Sugar';
+  @override String get fiber => 'Fiber';
+  @override String get sodium => 'Sodium';
+  @override String get potassium => 'Potassium';
+  @override String get cholesterol => 'Cholesterol';
+  @override String get macronutrients => 'Macronutrients';
+  @override String get more_details => 'More details';
+  @override String get product => 'Product';
+  @override String get kcal => 'kcal';
+  @override String get calories_intake => 'Calories Intake';
+  @override String get water_goal => 'Water Goal';
+  @override String get water_tracker => 'Water Tracker';
+  @override String get water => 'Water';
+  @override String get analyze_meal => 'Analyze a meal';
+  @override String get type_ingredients => 'Type ingredients or a short description';
+  @override String get meal_hint => 'e.g. 2 eggs and 1 banana';
+  @override String get analyze_food => 'Analyze food';
+  @override String get scan => 'Scan';
+  @override String get fetching_nutrition => 'Fetching nutrition…';
+  @override String get something_went_wrong => 'Something went wrong';
+  @override String get no_results_yet => 'No results yet';
+  @override String get no_results_subtitle => 'Enter a food or meal above, or scan a barcode to see full nutrition breakdown.';
+  @override String get scan_barcode => 'Scan barcode';
+  @override String get search_exercise => 'Search Exercise';
+  @override String get search_meal => 'Search Meal';
+  @override String get favorite_meals => 'Favorite Meals';
+  @override String get favorite_exercises => 'Favorite Exercises';
+
+  @override String get body_analysis => 'Body Analysis';
+  @override String get fitness_goal => 'Fitness Goal';
+  @override String get muscle_gain => 'Muscle Gain';
+  @override String get fat_loss => 'Fat Loss';
+  @override String get track_progress => 'Track Progress';
+  @override String get exercise_details => 'Exercise Details';
+  @override String get watch_video => 'Watch Video';
+  @override String get sets => 'Sets';
+  @override String get reps => 'Reps';
+  @override String get rest_time => 'Rest Time';
+  @override String get nutrition_summary => 'Nutrition Summary';
+  @override String get log_meal => 'Log Meal';
+  @override String get health_summary => 'Health Summary';
+  @override String get bmi => 'BMI';
+  @override String get target => 'Target';
+  @override String get goal_progress => 'Goal Progress';
+
+  @override String get personal_info => 'Personal Info';
+  @override String get fitness_nutrition_goals => 'Fitness & Nutrition Goals';
+  @override String get day_streak => 'Day Streak';
+  @override String get sign_out => 'Sign Out';
+  @override String get no_user_data_found => 'No User Data Found';
+  @override String get age_label => 'Age';
+  @override String get height_label => 'Height';
+  @override String get weight_label => 'Weight';
+  @override String get gender_label => 'Gender';
+  @override String get goal_label => 'Goal';
+  @override String get activity_level_label => 'Activity Level';
+  @override String get target_weight_label => 'Target Weight';
+  @override String get water_intake_label => 'Water Intake';
+  @override String get daily_calories_label => 'Daily Calories';
+  @override String get years => 'Years';
 }

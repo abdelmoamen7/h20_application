@@ -5,6 +5,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/colorsmanger/colorsmanger.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../models/nutrition_model.dart';
 import '../../../../services/NutrationServices/nutrition_provider.dart';
 
@@ -93,7 +94,7 @@ class _NutritionViewState extends State<_NutritionView> {
               ),
             ),
             title: Text(
-              'Nutrition',
+              AppLocalizations.of(context)!.nutrition,
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w800,
                 fontSize: 18.sp,
@@ -202,9 +203,8 @@ class _SearchCard extends StatelessWidget {
               ),
               SizedBox(width: 8.w),
               Text(
-                'Analyze a meal',
-                style: GoogleFonts.inter(
-                  fontSize: 16.sp,
+                AppLocalizations.of(context)!.analyze_meal,
+                style: GoogleFonts.inter(                  fontSize: 16.sp,
                   fontWeight: FontWeight.w700,
                   color: Colorsmanger.darkblue,
                 ),
@@ -213,7 +213,7 @@ class _SearchCard extends StatelessWidget {
           ),
           SizedBox(height: 6.h),
           Text(
-            'Type ingredients or a short description',
+            AppLocalizations.of(context)!.type_ingredients,
             style: GoogleFonts.inter(
               fontSize: 12.sp,
               color: Colorsmanger.Grey,
@@ -233,7 +233,7 @@ class _SearchCard extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0xFFF5F7FF),
-              hintText: 'e.g. 2 eggs and 1 banana',
+              hintText: AppLocalizations.of(context)!.meal_hint,
               hintStyle: GoogleFonts.inter(
                 color: Colorsmanger.Grey,
                 fontSize: 13.sp,
@@ -401,7 +401,7 @@ class _ActionRow extends StatelessWidget {
                       ),
                     )
                   : Text(
-                      'Analyze food',
+                      AppLocalizations.of(context)!.analyze_food,
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w700,
                         fontSize: 15.sp,
@@ -429,7 +429,7 @@ class _ActionRow extends StatelessWidget {
                 Icon(Icons.qr_code_scanner_rounded, size: 22.sp),
                 SizedBox(width: 6.w),
                 Text(
-                  'Scan',
+                  AppLocalizations.of(context)!.scan,
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.w700,
                     fontSize: 14.sp,
@@ -472,8 +472,7 @@ class _NutritionStateView extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Fetching nutrition…',
-              style: GoogleFonts.inter(
+              AppLocalizations.of(context)!.fetching_nutrition,              style: GoogleFonts.inter(
                 fontSize: 14.sp,
                 color: Colorsmanger.Grey,
                 fontWeight: FontWeight.w600,
@@ -488,7 +487,7 @@ class _NutritionStateView extends StatelessWidget {
       return _EmptyOrMessage(
         icon: Icons.error_outline_rounded,
         iconColor: Colorsmanger.Red.withValues(alpha: 0.9),
-        title: 'Something went wrong',
+        title: AppLocalizations.of(context)!.something_went_wrong,
         subtitle: errorMessage!,
       );
     }
@@ -497,9 +496,8 @@ class _NutritionStateView extends StatelessWidget {
       return _EmptyOrMessage(
         icon: Icons.restaurant_rounded,
         iconColor: Colorsmanger.Blue.withValues(alpha: 0.85),
-        title: 'No results yet',
-        subtitle:
-            'Enter a food or meal above, or scan a barcode to see full nutrition breakdown.',
+        title: AppLocalizations.of(context)!.no_results_yet,
+        subtitle: AppLocalizations.of(context)!.no_results_subtitle,
       );
     }
 
@@ -512,7 +510,7 @@ class _NutritionStateView extends StatelessWidget {
         _CaloriesHeroCard(nutrition: n),
         SizedBox(height: 14.h),
         Text(
-          'Macronutrients',
+          AppLocalizations.of(context)!.macronutrients,
           style: GoogleFonts.inter(
             fontSize: 14.sp,
             fontWeight: FontWeight.w800,
@@ -529,22 +527,22 @@ class _NutritionStateView extends StatelessWidget {
           childAspectRatio: 1.35,
           children: [
             _MacroTile(
-              label: 'Protein',
+              label: AppLocalizations.of(context)!.protein,
               value: '${n.protein.toStringAsFixed(1)} g',
               icon: Icons.fitness_center_rounded,
             ),
             _MacroTile(
-              label: 'Carbs',
+              label: AppLocalizations.of(context)!.carbs,
               value: '${n.carbs.toStringAsFixed(1)} g',
               icon: Icons.grain_rounded,
             ),
             _MacroTile(
-              label: 'Fat',
+              label: AppLocalizations.of(context)!.fat,
               value: '${n.fat.toStringAsFixed(1)} g',
               icon: Icons.water_drop_rounded,
             ),
             _MacroTile(
-              label: 'Sugar',
+              label: AppLocalizations.of(context)!.sugar,
               value: '${n.sugar.toStringAsFixed(1)} g',
               icon: Icons.icecream_rounded,
             ),
@@ -552,7 +550,7 @@ class _NutritionStateView extends StatelessWidget {
         ),
         SizedBox(height: 18.h),
         Text(
-          'More details',
+          AppLocalizations.of(context)!.more_details,
           style: GoogleFonts.inter(
             fontSize: 14.sp,
             fontWeight: FontWeight.w800,
@@ -562,22 +560,22 @@ class _NutritionStateView extends StatelessWidget {
         SizedBox(height: 10.h),
         _DetailRow(
           icon: Icons.eco_rounded,
-          label: 'Fiber',
+          label: AppLocalizations.of(context)!.fiber,
           value: '${n.fiber.toStringAsFixed(1)} g',
         ),
         _DetailRow(
           icon: Icons.opacity_rounded,
-          label: 'Sodium',
+          label: AppLocalizations.of(context)!.sodium,
           value: '${n.sodium.toStringAsFixed(1)} mg',
         ),
         _DetailRow(
           icon: Icons.bolt_rounded,
-          label: 'Potassium',
+          label: AppLocalizations.of(context)!.potassium,
           value: '${n.potassium.toStringAsFixed(1)} mg',
         ),
         _DetailRow(
           icon: Icons.favorite_rounded,
-          label: 'Cholesterol',
+          label: AppLocalizations.of(context)!.cholesterol,
           value: '${n.cholesterol.toStringAsFixed(1)} mg',
         ),
       ],
@@ -702,7 +700,7 @@ class _ProductHeaderCard extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           Text(
-            'Product',
+            AppLocalizations.of(context)!.product,
             style: GoogleFonts.inter(
               fontSize: 11.sp,
               fontWeight: FontWeight.w700,
@@ -824,7 +822,7 @@ class _CaloriesHeroCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Calories',
+                  AppLocalizations.of(context)!.calories,
                   style: GoogleFonts.inter(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w600,
@@ -842,7 +840,7 @@ class _CaloriesHeroCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'kcal',
+                  AppLocalizations.of(context)!.kcal,
                   style: GoogleFonts.inter(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
@@ -1001,7 +999,7 @@ class _BarcodeScannerPageState extends State<_BarcodeScannerPage> {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
-          'Scan barcode',
+          AppLocalizations.of(context)!.scan_barcode,
           style: GoogleFonts.inter(
             color: Colors.white,
             fontWeight: FontWeight.w700,

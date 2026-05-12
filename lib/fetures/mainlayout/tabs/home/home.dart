@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/Providers/CalculationProvider.dart';
 import '../../../../core/colorsmanger/colorsmanger.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../../../core/widget/FreeExerciseCard.dart';
 import '../../../../core/widget/MacroCard.dart';
@@ -29,6 +31,15 @@ class _HomeState extends State<Home> {
   static const int _tabWorkout = 2;
   static const int _tabProfile = 3;
 
+  // Stream is created once in initState, not on every rebuild
+  late final Stream<UserModel?> _userStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _userStream = Fairebaeservices.streamCurrentUser();
+  }
+
   void _goNutrition(BuildContext context) =>
       MainTabScope.goTo(context, _tabNutrition);
 
@@ -37,6 +48,7 @@ class _HomeState extends State<Home> {
   void _goProfile(BuildContext context) => MainTabScope.goTo(context, _tabProfile);
 
   void _showNotificationsSheet(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     showModalBottomSheet<void>(
       context: context,
       shape: RoundedRectangleBorder(
@@ -49,7 +61,7 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Notifications',
+              l.notifications,
               style: GoogleFonts.inter(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
@@ -58,7 +70,7 @@ class _HomeState extends State<Home> {
             ),
             SizedBox(height: 12.h),
             Text(
-              "You're all caught up. Workout reminders and meal tips will appear here.",
+              l.notifications_empty,
               style: GoogleFonts.inter(fontSize: 14.sp, color: Colorsmanger.Grey, height: 1.4),
             ),
             SizedBox(height: 20.h),
@@ -70,7 +82,7 @@ class _HomeState extends State<Home> {
                   backgroundColor: Colorsmanger.Blue,
                   padding: EdgeInsets.symmetric(vertical: 14.h),
                 ),
-                child: Text('OK', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                child: Text(l.ok, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
               ),
             ),
           ],
@@ -80,6 +92,7 @@ class _HomeState extends State<Home> {
   }
 
   void _showMotivationSheet(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -96,7 +109,7 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h + MediaQuery.paddingOf(ctx).bottom),
           children: [
             Text(
-              'Stay motivated',
+              l.stay_motivated,
               style: GoogleFonts.inter(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
@@ -104,9 +117,9 @@ class _HomeState extends State<Home> {
               ),
             ),
             SizedBox(height: 16.h),
-            _motivationTip('Consistency beats intensity — show up today, even for 10 minutes.'),
-            _motivationTip('Track meals in Nutrition to see how fuel matches your goals.'),
-            _motivationTip('Small wins add up: one extra glass of water, one walk, one healthy meal.'),
+            _motivationTip(l.motivation_tip1),
+            _motivationTip(l.motivation_tip2),
+            _motivationTip(l.motivation_tip3),
             SizedBox(height: 12.h),
             FilledButton(
               onPressed: () {
@@ -114,7 +127,7 @@ class _HomeState extends State<Home> {
                 _goWorkout(context);
               },
               style: FilledButton.styleFrom(backgroundColor: Colorsmanger.Blue),
-              child: Text('Go to workouts', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+              child: Text(l.go_to_workouts, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
             ),
           ],
         ),
@@ -168,7 +181,7 @@ class _HomeState extends State<Home> {
       } else {
         _goWorkout(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Browse Workouts to find "$label".')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.browse_workouts_hint)),
         );
       }
     } catch (_) {
@@ -182,14 +195,17 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<UserModel?>(
-      stream: Fairebaeservices.streamCurrentUser(),
+      stream: _userStream,
+      // Use cached user so the UI renders immediately without waiting for Firestore
+      initialData: UserModel.currentUser,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting &&
+            snapshot.data == null) {
           return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.data == null) {
-          return const Center(child: Text("No User Data"));
+          return Center(child: Text(AppLocalizations.of(context)!.no_user_data));
         }
 
         UserModel user = snapshot.data!;
@@ -288,7 +304,7 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Good Morning, 👋",
+                  AppLocalizations.of(context)!.good_morning_greeting,
                   style: GoogleFonts.inter(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -308,7 +324,7 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  "Ready to crush your goals today?",
+                  AppLocalizations.of(context)!.ready_to_crush,
                   style: GoogleFonts.inter(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -358,7 +374,7 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Daily Progress",
+            AppLocalizations.of(context)!.daily_progress,
             style: GoogleFonts.inter(
               fontSize: 18.sp,
               fontWeight: FontWeight.w700,
@@ -370,7 +386,7 @@ class _HomeState extends State<Home> {
             children: [
               Expanded(
                 child: _buildGridCard(
-                  "Calories",
+                  AppLocalizations.of(context)!.calories,
                   "${metrics.calories} kcal",
                   Icons.local_fire_department,
                   0.7,
@@ -380,7 +396,7 @@ class _HomeState extends State<Home> {
               SizedBox(width: 15.w),
               Expanded(
                 child: _buildGridCard(
-                  "Water",
+                  AppLocalizations.of(context)!.water,
                   metrics.waterTargetText,
                   Icons.water_drop,
                   0.4,
@@ -394,8 +410,8 @@ class _HomeState extends State<Home> {
             children: [
               Expanded(
                 child: _buildGridCard(
-                  "Streak",
-                  "${user.streakDays} Days",
+                  AppLocalizations.of(context)!.streak,
+                  "${user.streakDays} ${AppLocalizations.of(context)!.days}",
                   Icons.local_fire_department_outlined,
                   user.streakDays > 0 ? 1.0 : 0.0,
                   () => _goProfile(context),
@@ -404,7 +420,7 @@ class _HomeState extends State<Home> {
               SizedBox(width: 15.w),
               Expanded(
                 child: _buildGridCard(
-                  "Goal",
+                  AppLocalizations.of(context)!.goal,
                   user.goal.replaceAll('_', ' ').toUpperCase(),
                   Icons.flag_outlined,
                   metrics.goalProgress,
@@ -589,7 +605,7 @@ class _HomeState extends State<Home> {
           Icon(Icons.format_quote_rounded, color: Colors.white.withValues(alpha: 0.5), size: 40.sp),
           SizedBox(height: 10.h),
           Text(
-            "Push Yourself, Because No One Else Will Do It For You.",
+            AppLocalizations.of(context)!.motivation_quote,
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
               fontSize: 16.sp,
@@ -629,7 +645,7 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Quick Exercises",
+                      AppLocalizations.of(context)!.quick_exercises,
                       style: GoogleFonts.inter(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w700,
@@ -677,11 +693,27 @@ class _HomeState extends State<Home> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-                      child: Image.network(
-                        ex["image"]!,
+                      child: CachedNetworkImage(
+                        imageUrl: ex["image"]!,
                         height: 80.h,
                         width: double.infinity,
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          height: 80.h,
+                          color: Colors.grey.shade200,
+                          child: const Center(
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          height: 80.h,
+                          color: Colors.grey.shade200,
+                          child: const Icon(Icons.fitness_center, color: Colors.grey),
+                        ),
                       ),
                     ),
                     Expanded(

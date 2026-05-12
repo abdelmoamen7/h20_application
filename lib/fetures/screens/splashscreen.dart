@@ -21,7 +21,8 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    navigatestate();
+    // Defer until after the first frame so the splash UI paints immediately
+    WidgetsBinding.instance.addPostFrameCallback((_) => navigatestate());
   }
 
   void navigatestate() async {

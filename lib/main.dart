@@ -38,9 +38,9 @@ class MyApp extends StatelessWidget {
         //themeMode: configProvider.currenttheme,
         locale: Locale(configProvider.currentlanguage),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: [
-          Locale('en'), // English
-          Locale('ar'), // arabic
+        supportedLocales: const [
+          Locale('en'),
+          Locale('ar'),
         ],
         routes: Routesmanger.routes,
         initialRoute: Routesmanger.Splaschreens,

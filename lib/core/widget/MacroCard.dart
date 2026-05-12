@@ -1,13 +1,10 @@
-/// ===============================
-/// NUTRITION SECTION (MACROS)
-/// ===============================
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../models/HealthMetricsModel.dart';
 import '../colorsmanger/colorsmanger.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class MacroCard extends StatelessWidget {
   final HealthMetricsModel metrics;
@@ -45,7 +42,7 @@ class MacroCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Nutrition Summary",
+                AppLocalizations.of(context)!.nutrition_summary,
                 style: GoogleFonts.inter(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
@@ -59,9 +56,9 @@ class MacroCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildCircularMacro("Protein", metrics.proteinTarget, 150, Colorsmanger.Blue),
-              _buildCircularMacro("Carbs", metrics.carbsTarget, 200, Colors.orange),
-              _buildCircularMacro("Fats", metrics.fatsTarget, 70, Colors.redAccent),
+              _buildCircularMacro(AppLocalizations.of(context)!.protein, metrics.proteinTarget, 150, Colorsmanger.Blue),
+              _buildCircularMacro(AppLocalizations.of(context)!.carbs, metrics.carbsTarget, 200, Colors.orange),
+              _buildCircularMacro(AppLocalizations.of(context)!.fats, metrics.fatsTarget, 70, Colors.redAccent),
             ],
           ),
           SizedBox(height: 25.h),
@@ -78,7 +75,7 @@ class MacroCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Calories Intake",
+                      AppLocalizations.of(context)!.calories_intake,
                       style: GoogleFonts.inter(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -105,7 +102,7 @@ class MacroCard extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                       child: Text(
-                        "Log Meal",
+                        AppLocalizations.of(context)!.log_meal,
                         style: GoogleFonts.inter(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.bold,

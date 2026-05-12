@@ -1,13 +1,11 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:h20_application/core/routesmanger/routesManger.dart';
 import 'package:h20_application/core/widget/Custom_Elvated button.dart';
 import '../../../core/assetsmanger/assetsmanger.dart';
 import '../../../core/resources/isvalidat.dart';
 import '../../../core/widget/Custom_text_form.dart';
+import '../../../l10n/app_localizations.dart';
 
 class forgetpassword extends StatefulWidget {
   const forgetpassword({super.key});
@@ -34,41 +32,36 @@ class _forgetPasswordState extends State<forgetpassword> {
   }
 
   Future<void> _sendPasswordResetEmail() async {
+    final l = AppLocalizations.of(context)!;
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() { _isLoading = true; });
 
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: _emailController.text.trim(),
       );
-
       if (!mounted) return;
-          content: Text('Password reset link sent to your email.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l.reset_link_sent)),
+      );
       Navigator.pushReplacementNamed(context, Routesmanger.Logins);
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.message ?? 'Failed to send password reset email.'),
-        ),
+        SnackBar(content: Text(e.message ?? l.failed_reset)),
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      if (mounted) setState(() { _isLoading = false; });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Forget Password'),
+        title: Text(l.forget_password),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -85,13 +78,13 @@ class _forgetPasswordState extends State<forgetpassword> {
                 ),
                 const SizedBox(height: 32),
                 Text(
-                  'Enter your email',
+                  l.enter_your_email,
                   style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'We will send you a link to reset your password.',
+                  l.reset_password_subtitle,
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -100,25 +93,25 @@ class _forgetPasswordState extends State<forgetpassword> {
                   controller: _emailController,
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return 'Enter the email';
+                      return l.val_enter_email_short;
                     }
                     if (!Validator.isValidEmail(input.trim())) {
-                      return "The email format isn't correct";
+                      return l.val_invalid_email_short;
                     }
                     return null;
                   },
                   isObscure: false,
                   keyboardType: TextInputType.emailAddress,
-                  labelText: 'Email',
+                  labelText: l.email,
                   prefixIcon: Icons.email,
                 ),
                 const SizedBox(height: 24),
                 _isLoading
                     ? const Center(child: CircularProgressIndicator())
                     : Coustom_Elvated_Button(
-                  text: 'Send reset link',
-                  onPress: _sendPasswordResetEmail,
-                ),
+                        text: l.send_reset_link,
+                        onPress: _sendPasswordResetEmail,
+                      ),
               ],
             ),
           ),

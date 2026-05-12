@@ -45,6 +45,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -65,7 +66,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 30.h),
                 Text(
-                  "Welcome Back",
+                  l.welcome_back,
                   style: GoogleFonts.inter(
                     fontSize: 28.sp,
                     fontWeight: FontWeight.bold,
@@ -75,7 +76,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  "Sign in to continue your fitness journey",
+                  l.welcome_message,
                   style: GoogleFonts.inter(
                     fontSize: 14.sp,
                     color: Colorsmanger.Grey,
@@ -87,16 +88,16 @@ class _LoginState extends State<Login> {
                   controller: _emailcontroller,
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Please enter your email";
+                      return l.val_enter_email;
                     }
                     if (!Validator.isValidEmail(input)) {
-                      return "The email format is incorrect";
+                      return l.val_invalid_email;
                     }
                     return null;
                   },
                   isObscure: false,
                   keyboardType: TextInputType.emailAddress,
-                  labelText: AppLocalizations.of(context)!.email,
+                  labelText: l.email,
                   prefixIcon: Icons.email_outlined,
                 ),
                 SizedBox(height: 20.h),
@@ -104,15 +105,15 @@ class _LoginState extends State<Login> {
                   controller: _passwordcontroller,
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Please enter your password";
+                      return l.val_enter_password;
                     }
                     if (input.length < 6) {
-                      return "Password must be at least 6 characters";
+                      return l.val_password_short;
                     }
                     return null;
                   },
                   isObscure: securePassword,
-                  labelText: AppLocalizations.of(context)!.password,
+                  labelText: l.password,
                   prefixIcon: Icons.lock_outline,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -131,7 +132,7 @@ class _LoginState extends State<Login> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: CustomTextButton(
-                    texts: AppLocalizations.of(context)!.forget_password,
+                    texts: l.forget_password,
                     onTap: () {
                       Navigator.pushReplacementNamed(context, Routesmanger.forgetPassword);
                     },
@@ -139,7 +140,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 30.h),
                 Coustom_Elvated_Button(
-                  text: AppLocalizations.of(context)!.login,
+                  text: l.login,
                   onPress: _login,
                 ),
                 SizedBox(height: 24.h),
@@ -147,7 +148,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.dont_have_account,
+                      l.dont_have_account,
                       style: GoogleFonts.inter(
                         fontSize: 14.sp,
                         color: Colorsmanger.Grey,
@@ -155,7 +156,7 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(width: 4.w),
                     CustomTextButton(
-                      texts: AppLocalizations.of(context)!.create_account,
+                      texts: l.create_account,
                       onTap: () {
                         Navigator.pushNamed(context, Routesmanger.Registes);
                       },
@@ -165,28 +166,18 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 30.h),
                 Row(
                   children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey.shade300,
-                        thickness: 1,
-                      ),
-                    ),
+                    Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Text(
-                        "OR",
+                        l.or,
                         style: GoogleFonts.inter(
                           color: Colorsmanger.Grey,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey.shade300,
-                        thickness: 1,
-                      ),
-                    ),
+                    Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
                   ],
                 ),
                 SizedBox(height: 24.h),
@@ -198,14 +189,14 @@ class _LoginState extends State<Login> {
                       borderRadius: BorderRadius.circular(16.r),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: _signInWithGoogle,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(Imagemanger.Googlephoto, height: 24.h),
                       SizedBox(width: 12.w),
                       Text(
-                        "Continue with Google",
+                        l.login_with_google,
                         style: GoogleFonts.inter(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
@@ -225,50 +216,85 @@ class _LoginState extends State<Login> {
   }
 
   void _login() async {
+    final l = AppLocalizations.of(context)!;
     if (_formkey.currentState?.validate() == false) return;
     try {
       uitils.ShowLoading(context);
-      
       UserCredential userCredential = await Fairebaeservices.login(
-        _emailcontroller.text.trim(), 
+        _emailcontroller.text.trim(),
         _passwordcontroller.text,
       );
-      
       UserModel? user = await Fairebaeservices.getUserId(userCredential.user!.uid);
-      
       if (!mounted) return;
       uitils.hideDialog(context);
-
       if (user != null) {
         UserModel.currentUser = user;
-        
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        
-        // If the user has valid profile data, they have completed onboarding
         if (user.age > 0 || user.weight > 0) {
           await prefs.setBool('onboardingCompleted', true);
           if (!mounted) return;
           Navigator.pushNamedAndRemoveUntil(context, Routesmanger.mainlayout, (route) => false);
         } else {
-          // Exists in DB but no profile data
           await prefs.setBool('onboardingCompleted', false);
           if (!mounted) return;
           Navigator.pushNamedAndRemoveUntil(context, Routesmanger.Onbording, (route) => false);
         }
       } else {
-        // Authenticated but no Firestore document found, need onboarding
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('onboardingCompleted', false);
         if (!mounted) return;
         Navigator.pushNamedAndRemoveUntil(context, Routesmanger.Onbording, (route) => false);
       }
-      
     } on FirebaseAuthException catch (e) {
       uitils.hideDialog(context);
       uitils.ShowToastMassage(e.message ?? e.code, Colors.red);
     } catch (e) {
       uitils.hideDialog(context);
-      uitils.ShowToastMassage("Failed to Login", Colors.red);
+      uitils.ShowToastMassage(l.failed_login, Colors.red);
+    }
+  }
+
+  void _signInWithGoogle() async {
+    final l = AppLocalizations.of(context)!;
+    try {
+      uitils.ShowLoading(context);
+      final userCredential = await Fairebaeservices.signInWithGoogle();
+      if (userCredential == null) {
+        if (!mounted) return;
+        uitils.hideDialog(context);
+        return;
+      }
+      final user = userCredential.user!;
+      UserModel? existingUser = await Fairebaeservices.getUserId(user.uid);
+      if (existingUser == null) {
+        await Fairebaeservices.addUasertoFireStore(UserModel(
+          name: user.displayName ?? "",
+          id: user.uid,
+          email: user.email ?? "",
+          height: 0, weight: 0, caloriesTarget: 0, waterIntake: 0,
+          streakDays: 0, age: 0, gender: "", activityLevel: "",
+          goal: "", targetWeight: 0,
+        ));
+      }
+      if (!mounted) return;
+      uitils.hideDialog(context);
+      final prefs = await SharedPreferences.getInstance();
+      if (existingUser != null && (existingUser.age > 0 || existingUser.weight > 0)) {
+        UserModel.currentUser = existingUser;
+        await prefs.setBool('onboardingCompleted', true);
+        if (!mounted) return;
+        Navigator.pushNamedAndRemoveUntil(context, Routesmanger.mainlayout, (route) => false);
+      } else {
+        await prefs.setBool('onboardingCompleted', false);
+        if (!mounted) return;
+        Navigator.pushNamedAndRemoveUntil(context, Routesmanger.Onbording, (route) => false);
+      }
+    } on FirebaseAuthException catch (e) {
+      uitils.hideDialog(context);
+      uitils.ShowToastMassage(e.message ?? e.code, Colors.red);
+    } catch (e) {
+      uitils.hideDialog(context);
+      uitils.ShowToastMassage(l.failed_google, Colors.red);
     }
   }
 }

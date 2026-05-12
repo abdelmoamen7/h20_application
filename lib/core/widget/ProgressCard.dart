@@ -1,13 +1,10 @@
-/// ===============================
-/// BMI / HEALTH SUMMARY CARD
-/// ===============================
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../models/HealthMetricsModel.dart';
 import '../colorsmanger/colorsmanger.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ProgressCard extends StatelessWidget {
   final HealthMetricsModel metrics;
@@ -43,7 +40,7 @@ class ProgressCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Health Summary",
+                AppLocalizations.of(context)!.health_summary,
                 style: GoogleFonts.inter(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
@@ -71,11 +68,11 @@ class ProgressCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _metricItem("BMI", metrics.bmiText, Icons.monitor_weight_outlined),
+              _metricItem(AppLocalizations.of(context)!.bmi, metrics.bmiText, Icons.monitor_weight_outlined),
               Container(width: 1, height: 40.h, color: Colors.grey.shade200),
-              _metricItem("Target", "${metrics.goalProgress * 100}%", Icons.flag_outlined),
+              _metricItem(AppLocalizations.of(context)!.target, "${metrics.goalProgress * 100}%", Icons.flag_outlined),
               Container(width: 1, height: 40.h, color: Colors.grey.shade200),
-              _metricItem("Water", metrics.waterTargetText, Icons.water_drop_outlined),
+              _metricItem(AppLocalizations.of(context)!.water, metrics.waterTargetText, Icons.water_drop_outlined),
             ],
           ),
           SizedBox(height: 25.h),
@@ -83,7 +80,7 @@ class ProgressCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Goal Progress",
+                AppLocalizations.of(context)!.goal_progress,
                 style: GoogleFonts.inter(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,

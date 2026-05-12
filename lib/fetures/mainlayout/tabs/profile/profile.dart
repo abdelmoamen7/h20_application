@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/colorsmanger/colorsmanger.dart';
+import '../../../../core/config/ConfigProvider.dart';
 import '../../../../core/routesmanger/routesManger.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../models/UserModel.dart';
 import '../../../../services/FirebaseServcies/firebaseService.dart';
 
@@ -21,7 +24,7 @@ class Profile extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data == null) {
-          return const Center(child: Text("No User Data Found"));
+          return Center(child: Text(AppLocalizations.of(context)!.no_user_data_found));
         }
 
         UserModel user = snapshot.data!;
@@ -34,11 +37,11 @@ class Profile extends StatelessWidget {
               children: [
                 _buildHeader(user, context),
                 SizedBox(height: 20.h),
-                _buildSectionTitle("Personal Info"),
-                _buildPersonalInfoCard(user),
+                _buildSectionTitle(AppLocalizations.of(context)!.personal_info, context),
+                _buildPersonalInfoCard(user, context),
                 SizedBox(height: 20.h),
-                _buildSectionTitle("Fitness & Nutrition Goals"),
-                _buildGoalsCard(user),
+                _buildSectionTitle(AppLocalizations.of(context)!.fitness_nutrition_goals, context),
+                _buildGoalsCard(user, context),
                 SizedBox(height: 40.h),
               ],
             ),
@@ -70,19 +73,48 @@ class Profile extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: Icon(Icons.logout, color: Colors.white, size: 28.sp),
-              tooltip: 'Sign Out',
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                if (context.mounted) {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routesmanger.Logins,
-                    (route) => false,
-                  );
-                }
-              },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Language toggle
+                Consumer<ConfigProvider>(
+                  builder: (context, config, _) => GestureDetector(
+                    onTap: () => config.changeLanguage(
+                      config.isEnglishEnabled ? 'ar' : 'en',
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Text(
+                        config.isEnglishEnabled ? 'عربي' : 'EN',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                IconButton(
+                  icon: Icon(Icons.logout, color: Colors.white, size: 28.sp),
+                  tooltip: AppLocalizations.of(context)!.sign_out,
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    if (context.mounted) {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        Routesmanger.Logins,
+                        (route) => false,
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
           CircleAvatar(
@@ -133,7 +165,7 @@ class Profile extends StatelessWidget {
                 Icon(Icons.local_fire_department, color: Colors.orangeAccent, size: 20.sp),
                 SizedBox(width: 5.w),
                 Text(
-                  "${user.streakDays} Day Streak",
+                  "${user.streakDays} ${AppLocalizations.of(context)!.day_streak}",
                   style: GoogleFonts.inter(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -147,7 +179,7 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(String title, BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Align(
@@ -164,7 +196,8 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget _buildPersonalInfoCard(UserModel user) {
+  Widget _buildPersonalInfoCard(UserModel user, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       padding: EdgeInsets.all(20.w),
@@ -181,15 +214,15 @@ class Profile extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildInfoRow(Icons.cake, "Age", "${user.age} Years"),
+          _buildInfoRow(Icons.cake, l.age_label, "${user.age} ${l.years}"),
           Divider(color: Colors.grey.shade200, height: 20.h),
-          _buildInfoRow(Icons.height, "Height", "${user.height} cm"),
+          _buildInfoRow(Icons.height, l.height_label, "${user.height} cm"),
           Divider(color: Colors.grey.shade200, height: 20.h),
-          _buildInfoRow(Icons.monitor_weight, "Weight", "${user.weight} kg"),
+          _buildInfoRow(Icons.monitor_weight, l.weight_label, "${user.weight} kg"),
           Divider(color: Colors.grey.shade200, height: 20.h),
           _buildInfoRow(
             user.gender.toLowerCase() == "male" ? Icons.male : Icons.female,
-            "Gender",
+            l.gender_label,
             user.gender,
           ),
         ],
@@ -197,7 +230,8 @@ class Profile extends StatelessWidget {
     );
   }
 
-  Widget _buildGoalsCard(UserModel user) {
+  Widget _buildGoalsCard(UserModel user, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       padding: EdgeInsets.all(20.w),
@@ -214,15 +248,15 @@ class Profile extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildInfoRow(Icons.flag, "Goal", user.goal.replaceAll("_", " ").toUpperCase()),
+          _buildInfoRow(Icons.flag, l.goal_label, user.goal.replaceAll("_", " ").toUpperCase()),
           Divider(color: Colors.grey.shade200, height: 20.h),
-          _buildInfoRow(Icons.fitness_center, "Activity Level", user.activityLevel.toUpperCase()),
+          _buildInfoRow(Icons.fitness_center, l.activity_level_label, user.activityLevel.toUpperCase()),
           Divider(color: Colors.grey.shade200, height: 20.h),
-          _buildInfoRow(Icons.monitor_weight_outlined, "Target Weight", "${user.targetWeight} kg"),
+          _buildInfoRow(Icons.monitor_weight_outlined, l.target_weight_label, "${user.targetWeight} kg"),
           Divider(color: Colors.grey.shade200, height: 20.h),
-          _buildInfoRow(Icons.water_drop, "Water Intake", "${user.waterIntake.toStringAsFixed(1)} L"),
+          _buildInfoRow(Icons.water_drop, l.water_intake_label, "${user.waterIntake.toStringAsFixed(1)} L"),
           Divider(color: Colors.grey.shade200, height: 20.h),
-          _buildInfoRow(Icons.local_dining, "Daily Calories", "${user.caloriesTarget} kcal"),
+          _buildInfoRow(Icons.local_dining, l.daily_calories_label, "${user.caloriesTarget} kcal"),
         ],
       ),
     );

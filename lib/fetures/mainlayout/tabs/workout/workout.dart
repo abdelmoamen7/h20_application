@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/colorsmanger/colorsmanger.dart';
 import '../../../../core/widget/FreeExerciseCard.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../models/FreeExerciseModel.dart';
 import '../../../../services/WorkoutServcies/WorkoutApiService.dart';
 
@@ -44,25 +45,23 @@ class workoutState extends State<workout> {
                   Icon(Icons.error_outline, color: Colors.red, size: 50.sp),
                   SizedBox(height: 16.h),
                   Text(
-                    'Error loading workouts:\n${snapshot.error}',
+                    '${AppLocalizations.of(context)!.error_loading_workouts}:\n${snapshot.error}',
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 16.h),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        _exercisesFuture = _apiService.fetchExercises(
-                          forceRefresh: true,
-                        );
+                        _exercisesFuture = _apiService.fetchExercises(forceRefresh: true);
                       });
                     },
-                    child: const Text('Retry'),
+                    child: Text(AppLocalizations.of(context)!.retry),
                   ),
                 ],
               ),
             );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No workouts found.'));
+            return Center(child: Text(AppLocalizations.of(context)!.no_workouts_found));
           }
 
           final exercises = snapshot.data!;
@@ -90,7 +89,7 @@ class workoutState extends State<workout> {
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     title: Text(
-                      "Discover Workouts",
+                      AppLocalizations.of(context)!.discover_workouts,
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w800,
                         color: Colors.white,

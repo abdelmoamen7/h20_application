@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/FreeExerciseModel.dart';
+import '../../l10n/app_localizations.dart';
 
 class ExerciseDetails extends StatelessWidget {
   final FreeExerciseModel exercise;
@@ -169,7 +170,7 @@ class ExerciseDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  'Instructions',
+                  AppLocalizations.of(context)!.instructions,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -185,14 +186,14 @@ class ExerciseDetails extends StatelessWidget {
                   ),
                 ),
                 if (exercise.instructions.isEmpty)
-                  const Text('No instructions provided.'),
+                  Text(AppLocalizations.of(context)!.no_instructions),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.arrow_back),
-                    label: const Text('Back to Workout'),
+                    label: Text(AppLocalizations.of(context)!.back_to_workout),
                   ),
                 ),
               ],

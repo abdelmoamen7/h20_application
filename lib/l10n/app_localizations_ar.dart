@@ -8,225 +8,207 @@ import 'app_localizations.dart';
 class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
-  @override
-  String get nutrition => 'التغذية';
-
-  @override
-  String get nutrition_plan => 'الخطة الغذائية';
-
-  @override
-  String get nutrition_details => 'تفاصيل التغذية';
-
-  @override
-  String get daily_nutrition => 'التغذية اليومية';
-
-  @override
-  String get nutrition_goal => 'هدف التغذية';
-
-  @override
-  String get workout => 'التمرين';
-
-  @override
-  String get workouts => 'التمارين';
-
-  @override
-  String get workout_plan => 'خطة التمرين';
-
-  @override
-  String get workout_details => 'تفاصيل التمرين';
-
-  @override
-  String get daily_workout => 'تمرين اليوم';
-
-  @override
-  String get weekly_workout => 'التمرين الأسبوعي';
-
-  @override
-  String get start_workout => 'ابدأ التمرين';
-
-  @override
-  String get complete_workout => 'إنهاء التمرين';
-
-  @override
-  String get workout_completed => 'تم إنهاء التمرين';
-
-  @override
-  String get exercise => 'تمرين';
-
-  @override
-  String get exercises => 'التمارين';
-
-  @override
-  String get push_workout => 'تمارين الدفع';
-
-  @override
-  String get pull_workout => 'تمارين السحب';
-
-  @override
-  String get legs_workout => 'تمارين الأرجل';
-
-  @override
-  String get cardio_workout => 'تمارين الكارديو';
-
-  @override
-  String get full_body_workout => 'تمارين الجسم بالكامل';
-
-  @override
-  String get workout_duration => 'مدة التمرين';
-
-  @override
-  String get workout_level => 'مستوى التمرين';
-
-  @override
-  String get beginner => 'مبتدئ';
-
-  @override
-  String get intermediate => 'متوسط';
-
-  @override
-  String get advanced => 'متقدم';
-
-  @override
-  String get meal_plan => 'الخطة الغذائية';
-
-  @override
-  String get meal_details => 'تفاصيل الوجبة';
-
-  @override
-  String get meal_category => 'نوع الوجبة';
-
-  @override
-  String get healthy_food => 'طعام صحي';
-
-  @override
-  String get recommended_meals => 'الوجبات المقترحة';
-
-  @override
-  String get calories => 'السعرات الحرارية';
-
-  @override
-  String get protein => 'البروتين';
-
-  @override
-  String get carbohydrates => 'الكربوهيدرات';
-
-  @override
-  String get fats => 'الدهون';
-
-  @override
-  String get water_goal => 'هدف شرب الماء';
-
-  @override
-  String get water_tracker => 'متابعة شرب الماء';
-
-  @override
-  String get body_analysis => 'تحليل الجسم';
-
-  @override
-  String get fitness_goal => 'هدف اللياقة';
-
-  @override
-  String get muscle_gain => 'زيادة العضلات';
-
-  @override
-  String get fat_loss => 'خسارة الدهون';
-
-  @override
-  String get track_progress => 'متابعة التقدم';
-
-  @override
-  String get exercise_details => 'تفاصيل التمرين';
-
-  @override
-  String get watch_video => 'مشاهدة الفيديو';
-
-  @override
-  String get sets => 'المجموعات';
-
-  @override
-  String get reps => 'التكرارات';
-
-  @override
-  String get rest_time => 'وقت الراحة';
-
-  @override
-  String get search_exercise => 'البحث عن تمرين';
-
-  @override
-  String get search_meal => 'البحث عن وجبة';
-
-  @override
-  String get favorite_meals => 'الوجبات المفضلة';
-
-  @override
-  String get favorite_exercises => 'التمارين المفضلة';
-
-  @override
-  String get home => 'الرئيسية';
-
-  @override
-  String get profile => 'الملف الشخصي';
-
-  @override
-  String get register => 'إنشاء حساب';
-
-  @override
-  String get login => 'تسجيل الدخول';
-
-  @override
-  String get create_account => 'إنشاء حساب';
-
-  @override
-  String get already_have_account => 'لديك حساب بالفعل؟';
-
-  @override
-  String get dont_have_account => 'ليس لديك حساب؟';
-
-  @override
-  String get email => 'البريد الإلكتروني';
-
-  @override
-  String get password => 'كلمة المرور';
-
-  @override
-  String get re_password => 'تأكيد كلمة المرور';
-
-  @override
-  String get forget_password => 'نسيت كلمة المرور';
-
-  @override
-  String get reset_password => 'إعادة تعيين كلمة المرور';
-
-  @override
-  String get login_with_google => 'تسجيل الدخول بواسطة جوجل';
-
-  @override
-  String get logout => 'تسجيل الخروج';
-
-  @override
-  String get name => 'الاسم';
-
-  @override
-  String get phone => 'رقم الهاتف';
-
-  @override
-  String get welcome => 'مرحبًا';
-
-  @override
-  String get welcome_back => 'مرحبًا بعودتك';
-
-  @override
-  String get welcome_message => 'مرحبًا بعودتك في رحلتك الرياضية';
-
-  @override
-  String get good_morning => 'صباح الخير';
-
-  @override
-  String get good_evening => 'مساء الخير';
-
-  @override
-  String get lets_start => 'لنبدأ رحلتك';
-
-  @override
-  String get stay_healthy => 'ابقَ صحيًا وابقَ قويًا';
+  @override String get home => 'الرئيسية';
+  @override String get profile => 'الملف الشخصي';
+  @override String get nutrition => 'التغذية';
+  @override String get workout => 'التمرين';
+  @override String get workouts => 'التمارين';
+
+  @override String get register => 'إنشاء حساب';
+  @override String get login => 'تسجيل الدخول';
+  @override String get create_account => 'إنشاء حساب';
+  @override String get already_have_account => 'لديك حساب بالفعل؟';
+  @override String get dont_have_account => 'ليس لديك حساب؟';
+  @override String get email => 'البريد الإلكتروني';
+  @override String get password => 'كلمة المرور';
+  @override String get re_password => 'تأكيد كلمة المرور';
+  @override String get forget_password => 'نسيت كلمة المرور';
+  @override String get reset_password => 'إعادة تعيين كلمة المرور';
+  @override String get login_with_google => 'المتابعة بواسطة جوجل';
+  @override String get logout => 'تسجيل الخروج';
+  @override String get name => 'الاسم';
+  @override String get phone => 'رقم الهاتف';
+  @override String get welcome => 'مرحبًا';
+  @override String get welcome_back => 'مرحبًا بعودتك';
+  @override String get welcome_message => 'سجّل دخولك لمتابعة رحلتك الرياضية';
+  @override String get join_us => 'انضم إلينا وحوّل جسمك';
+  @override String get or => 'أو';
+  @override String get enter_your_email => 'أدخل بريدك الإلكتروني';
+  @override String get reset_password_subtitle => 'سنرسل لك رابطًا لإعادة تعيين كلمة المرور.';
+  @override String get send_reset_link => 'إرسال رابط الإعادة';
+
+  @override String get val_enter_name => 'يرجى إدخال اسمك';
+  @override String get val_enter_email => 'يرجى إدخال بريدك الإلكتروني';
+  @override String get val_invalid_email => 'صيغة البريد الإلكتروني غير صحيحة';
+  @override String get val_enter_password => 'يرجى إدخال كلمة المرور';
+  @override String get val_password_short => 'يجب أن تكون كلمة المرور 6 أحرف على الأقل';
+  @override String get val_reenter_password => 'يرجى إعادة إدخال كلمة المرور';
+  @override String get val_passwords_mismatch => 'كلمتا المرور غير متطابقتين';
+  @override String get val_enter_age => 'أدخل عمرًا صحيحًا';
+  @override String get val_enter_weight => 'أدخل الوزن';
+  @override String get val_enter_target_weight => 'أدخل الوزن المستهدف';
+  @override String get val_enter_height => 'أدخل الطول';
+  @override String get val_enter_calories => 'أدخل السعرات الحرارية';
+  @override String get val_choose_gender => 'اختر الجنس';
+  @override String get val_choose_goal => 'اختر الهدف';
+  @override String get val_choose_activity => 'اختر مستوى النشاط';
+  @override String get val_enter_email_short => 'أدخل البريد الإلكتروني';
+  @override String get val_invalid_email_short => 'صيغة البريد الإلكتروني غير صحيحة';
+
+  @override String get failed_register => 'فشل إنشاء الحساب';
+  @override String get failed_login => 'فشل تسجيل الدخول';
+  @override String get failed_google => 'فشل تسجيل الدخول بواسطة جوجل';
+  @override String get failed_save => 'فشل حفظ المعلومات';
+  @override String get please_login_again => 'يرجى تسجيل الدخول مجددًا';
+  @override String get info_saved => 'تم حفظ المعلومات';
+  @override String get reset_link_sent => 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.';
+  @override String get failed_reset => 'فشل إرسال بريد إعادة تعيين كلمة المرور.';
+
+  @override String get personal_information => 'المعلومات الشخصية';
+  @override String get personalize_journey => 'دعنا نخصص رحلتك الرياضية.';
+  @override String get age => 'العمر';
+  @override String get weight_kg => 'الوزن (كجم)';
+  @override String get target_weight_kg => 'الوزن المستهدف (كجم)';
+  @override String get height_cm => 'الطول (سم)';
+  @override String get calories_target => 'هدف السعرات الحرارية';
+  @override String get gender => 'الجنس';
+  @override String get goal => 'الهدف';
+  @override String get activity_level => 'مستوى النشاط';
+  @override String get continue_btn => 'متابعة';
+  @override String get male => 'ذكر';
+  @override String get female => 'أنثى';
+  @override String get lose_weight => 'خسارة الوزن';
+  @override String get gain_muscle => 'بناء العضلات';
+  @override String get stay_fit => 'الحفاظ على اللياقة';
+  @override String get moderate => 'متوسط';
+
+  @override String get good_morning => 'صباح الخير';
+  @override String get good_evening => 'مساء الخير';
+  @override String get good_morning_greeting => 'صباح الخير، 👋';
+  @override String get ready_to_crush => 'هل أنت مستعد لتحقيق أهدافك اليوم؟';
+  @override String get daily_progress => 'التقدم اليومي';
+  @override String get streak => 'الأيام المتتالية';
+  @override String get days => 'أيام';
+  @override String get quick_exercises => 'تمارين سريعة';
+  @override String get motivation_quote => 'ادفع نفسك، لأنه لن يفعل ذلك أحد غيرك.';
+  @override String get no_user_data => 'لا توجد بيانات مستخدم';
+  @override String get browse_workouts_hint => 'تصفح التمارين للعثور على هذا التمرين.';
+  @override String get notifications => 'الإشعارات';
+  @override String get notifications_empty => 'أنت على اطلاع بكل شيء. ستظهر هنا تذكيرات التمرين ونصائح الوجبات.';
+  @override String get ok => 'حسنًا';
+  @override String get stay_motivated => 'ابقَ متحفزًا';
+  @override String get motivation_tip1 => 'الاتساق يتفوق على الشدة — احضر اليوم، حتى لو لمدة 10 دقائق.';
+  @override String get motivation_tip2 => 'تتبع وجباتك في التغذية لترى كيف يتوافق الوقود مع أهدافك.';
+  @override String get motivation_tip3 => 'الانتصارات الصغيرة تتراكم: كوب ماء إضافي، نزهة واحدة، وجبة صحية واحدة.';
+  @override String get go_to_workouts => 'اذهب إلى التمارين';
+  @override String get lets_start => 'لنبدأ رحلتك';
+  @override String get stay_healthy => 'ابقَ صحيًا وابقَ قويًا';
+
+  @override String get nutrition_plan => 'الخطة الغذائية';
+  @override String get nutrition_details => 'تفاصيل التغذية';
+  @override String get daily_nutrition => 'التغذية اليومية';
+  @override String get nutrition_goal => 'هدف التغذية';
+  @override String get workout_plan => 'خطة التمرين';
+  @override String get workout_details => 'تفاصيل التمرين';
+  @override String get daily_workout => 'تمرين اليوم';
+  @override String get weekly_workout => 'التمرين الأسبوعي';
+  @override String get start_workout => 'ابدأ التمرين';
+  @override String get complete_workout => 'إنهاء التمرين';
+  @override String get workout_completed => 'تم إنهاء التمرين';
+  @override String get exercise => 'تمرين';
+  @override String get exercises => 'التمارين';
+  @override String get push_workout => 'تمارين الدفع';
+  @override String get pull_workout => 'تمارين السحب';
+  @override String get legs_workout => 'تمارين الأرجل';
+  @override String get cardio_workout => 'تمارين الكارديو';
+  @override String get full_body_workout => 'تمارين الجسم بالكامل';
+  @override String get workout_duration => 'مدة التمرين';
+  @override String get workout_level => 'مستوى التمرين';
+  @override String get beginner => 'مبتدئ';
+  @override String get intermediate => 'متوسط';
+  @override String get advanced => 'متقدم';
+  @override String get todays_workouts => 'تمارين اليوم';
+  @override String get see_all => 'عرض الكل';
+  @override String get no_workouts_available => 'لا تتوفر تمارين.';
+  @override String get discover_workouts => 'اكتشف التمارين';
+  @override String get error_loading_workouts => 'خطأ في تحميل التمارين';
+  @override String get retry => 'إعادة المحاولة';
+  @override String get no_workouts_found => 'لم يتم العثور على تمارين.';
+  @override String get no_instructions => 'لا توجد تعليمات.';
+  @override String get back_to_workout => 'العودة إلى التمرين';
+  @override String get instructions => 'التعليمات';
+
+  @override String get meal_plan => 'الخطة الغذائية';
+  @override String get meal_details => 'تفاصيل الوجبة';
+  @override String get meal_category => 'نوع الوجبة';
+  @override String get healthy_food => 'طعام صحي';
+  @override String get recommended_meals => 'الوجبات المقترحة';
+  @override String get recommended_meal => 'الوجبة المقترحة';
+  @override String get view_meal => 'عرض الوجبة';
+  @override String get calories => 'السعرات الحرارية';
+  @override String get protein => 'البروتين';
+  @override String get carbohydrates => 'الكربوهيدرات';
+  @override String get fats => 'الدهون';
+  @override String get carbs => 'الكربوهيدرات';
+  @override String get fat => 'الدهون';
+  @override String get sugar => 'السكر';
+  @override String get fiber => 'الألياف';
+  @override String get sodium => 'الصوديوم';
+  @override String get potassium => 'البوتاسيوم';
+  @override String get cholesterol => 'الكوليسترول';
+  @override String get macronutrients => 'المغذيات الكبرى';
+  @override String get more_details => 'مزيد من التفاصيل';
+  @override String get product => 'المنتج';
+  @override String get kcal => 'سعرة حرارية';
+  @override String get calories_intake => 'السعرات المتناولة';
+  @override String get water_goal => 'هدف شرب الماء';
+  @override String get water_tracker => 'متابعة شرب الماء';
+  @override String get water => 'الماء';
+  @override String get analyze_meal => 'تحليل وجبة';
+  @override String get type_ingredients => 'اكتب المكونات أو وصفًا مختصرًا';
+  @override String get meal_hint => 'مثال: بيضتان وموزة';
+  @override String get analyze_food => 'تحليل الطعام';
+  @override String get scan => 'مسح';
+  @override String get fetching_nutrition => 'جارٍ جلب بيانات التغذية…';
+  @override String get something_went_wrong => 'حدث خطأ ما';
+  @override String get no_results_yet => 'لا توجد نتائج بعد';
+  @override String get no_results_subtitle => 'أدخل طعامًا أو وجبة أعلاه، أو امسح الباركود لرؤية تفاصيل التغذية الكاملة.';
+  @override String get scan_barcode => 'مسح الباركود';
+  @override String get search_exercise => 'البحث عن تمرين';
+  @override String get search_meal => 'البحث عن وجبة';
+  @override String get favorite_meals => 'الوجبات المفضلة';
+  @override String get favorite_exercises => 'التمارين المفضلة';
+
+  @override String get body_analysis => 'تحليل الجسم';
+  @override String get fitness_goal => 'هدف اللياقة';
+  @override String get muscle_gain => 'زيادة العضلات';
+  @override String get fat_loss => 'خسارة الدهون';
+  @override String get track_progress => 'متابعة التقدم';
+  @override String get exercise_details => 'تفاصيل التمرين';
+  @override String get watch_video => 'مشاهدة الفيديو';
+  @override String get sets => 'المجموعات';
+  @override String get reps => 'التكرارات';
+  @override String get rest_time => 'وقت الراحة';
+  @override String get nutrition_summary => 'ملخص التغذية';
+  @override String get log_meal => 'تسجيل وجبة';
+  @override String get health_summary => 'ملخص الصحة';
+  @override String get bmi => 'مؤشر كتلة الجسم';
+  @override String get target => 'الهدف';
+  @override String get goal_progress => 'تقدم الهدف';
+
+  @override String get personal_info => 'المعلومات الشخصية';
+  @override String get fitness_nutrition_goals => 'أهداف اللياقة والتغذية';
+  @override String get day_streak => 'يوم متتالي';
+  @override String get sign_out => 'تسجيل الخروج';
+  @override String get no_user_data_found => 'لم يتم العثور على بيانات المستخدم';
+  @override String get age_label => 'العمر';
+  @override String get height_label => 'الطول';
+  @override String get weight_label => 'الوزن';
+  @override String get gender_label => 'الجنس';
+  @override String get goal_label => 'الهدف';
+  @override String get activity_level_label => 'مستوى النشاط';
+  @override String get target_weight_label => 'الوزن المستهدف';
+  @override String get water_intake_label => 'كمية الماء';
+  @override String get daily_calories_label => 'السعرات اليومية';
+  @override String get years => 'سنوات';
 }

@@ -50,6 +50,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -60,7 +61,7 @@ class _RegisterState extends State<Register> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          AppLocalizations.of(context)!.register,
+          l.register,
           style: GoogleFonts.inter(
             color: Colorsmanger.darkblue,
             fontWeight: FontWeight.bold,
@@ -85,7 +86,7 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 20.h),
                 Text(
-                  "Create Account",
+                  l.create_account,
                   style: GoogleFonts.inter(
                     fontSize: 28.sp,
                     fontWeight: FontWeight.bold,
@@ -95,7 +96,7 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  "Join us and transform your body",
+                  l.join_us,
                   style: GoogleFonts.inter(
                     fontSize: 14.sp,
                     color: Colorsmanger.Grey,
@@ -107,12 +108,12 @@ class _RegisterState extends State<Register> {
                   controller: _namecontroller,
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Please enter your name";
+                      return l.val_enter_name;
                     }
                     return null;
                   },
                   isObscure: false,
-                  labelText: AppLocalizations.of(context)!.name,
+                  labelText: l.name,
                   prefixIcon: Icons.person_outline,
                 ),
                 SizedBox(height: 16.h),
@@ -120,16 +121,16 @@ class _RegisterState extends State<Register> {
                   controller: _emailcontroller,
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Please enter your email";
+                      return l.val_enter_email;
                     }
                     if (!Validator.isValidEmail(input)) {
-                      return "The email format is incorrect";
+                      return l.val_invalid_email;
                     }
                     return null;
                   },
                   isObscure: false,
                   keyboardType: TextInputType.emailAddress,
-                  labelText: AppLocalizations.of(context)!.email,
+                  labelText: l.email,
                   prefixIcon: Icons.email_outlined,
                 ),
                 SizedBox(height: 16.h),
@@ -137,15 +138,15 @@ class _RegisterState extends State<Register> {
                   controller: _passwordcontroller,
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Please enter a password";
+                      return l.val_enter_password;
                     }
                     if (input.length < 6) {
-                      return "Password must be at least 6 characters";
+                      return l.val_password_short;
                     }
                     return null;
                   },
                   isObscure: securePassword,
-                  labelText: AppLocalizations.of(context)!.password,
+                  labelText: l.password,
                   prefixIcon: Icons.lock_outline,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -165,20 +166,20 @@ class _RegisterState extends State<Register> {
                   controller: _repasswordcontroller,
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Please re-enter your password";
+                      return l.val_reenter_password;
                     }
                     if (input != _passwordcontroller.text) {
-                      return "Passwords do not match";
+                      return l.val_passwords_mismatch;
                     }
                     return null;
                   },
                   isObscure: securePassword,
-                  labelText: AppLocalizations.of(context)!.re_password,
+                  labelText: l.re_password,
                   prefixIcon: Icons.lock_outline,
                 ),
                 SizedBox(height: 30.h),
                 Coustom_Elvated_Button(
-                  text: AppLocalizations.of(context)!.create_account,
+                  text: l.create_account,
                   onPress: _registered,
                 ),
                 SizedBox(height: 24.h),
@@ -186,7 +187,7 @@ class _RegisterState extends State<Register> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already have an account?",
+                      l.already_have_account,
                       style: GoogleFonts.inter(
                         fontSize: 14.sp,
                         color: Colorsmanger.Grey,
@@ -194,7 +195,7 @@ class _RegisterState extends State<Register> {
                     ),
                     SizedBox(width: 4.w),
                     CustomTextButton(
-                      texts: AppLocalizations.of(context)!.login,
+                      texts: l.login,
                       onTap: () {
                         Navigator.pushReplacementNamed(context, Routesmanger.Logins);
                       },
@@ -211,36 +212,31 @@ class _RegisterState extends State<Register> {
   }
 
   void _registered() async {
+    final l = AppLocalizations.of(context)!;
     if (formkey.currentState?.validate() == false) return;
     try {
       uitils.ShowLoading(context);
-      
       UserCredential userCredential = await Fairebaeservices.registers(
-        _emailcontroller.text.trim(), 
+        _emailcontroller.text.trim(),
         _passwordcontroller.text,
       );
-      
       await Fairebaeservices.addUasertoFireStore(UserModel(
-        name: _namecontroller.text.trim(), 
-        id: userCredential.user!.uid, 
+        name: _namecontroller.text.trim(),
+        id: userCredential.user!.uid,
         email: _emailcontroller.text.trim(),
         height: 0, weight: 0, caloriesTarget: 0, waterIntake: 0,
         streakDays: 0, age: 0, gender: "", activityLevel: "",
         goal: "", targetWeight: 0,
       ));
-      
       if (!mounted) return;
       uitils.hideDialog(context);
-      
-      // Navigate straight to Onboarding after successful registration
       Navigator.pushReplacementNamed(context, Routesmanger.Onbording);
-      
     } on FirebaseAuthException catch (e) {
       uitils.hideDialog(context);
       uitils.ShowToastMassage(e.message ?? e.code, Colors.red);
     } catch (e) {
       uitils.hideDialog(context);
-      uitils.ShowToastMassage("Failed to register", Colors.red);
+      uitils.ShowToastMassage(l.failed_register, Colors.red);
     }
   }
 }

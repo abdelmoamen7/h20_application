@@ -1,9 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../models/HealthMetricsModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/nutrition_model.dart';
 class Fairebaeservices{
+
+  /// Sign in with Google and return a [UserCredential].
+  /// Returns null if the user cancels the sign-in flow.
+  static Future<UserCredential?> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return null; // user cancelled
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    return FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
   static Future<UserCredential> registers(String email, String password) async {
     /// this way to make the  user to Register  using the  sign in user and password by firebase  by user and password
     UserCredential userCredential = await FirebaseAuth.instance

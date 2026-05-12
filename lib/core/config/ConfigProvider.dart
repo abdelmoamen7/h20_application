@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ConfigProvider
-    extends ChangeNotifier {
+class ConfigProvider extends ChangeNotifier {
+  static const _langKey = 'app_language';
 
-  String currentlanguage = "en";
+  String currentlanguage = 'en';
 
-  bool get isEnglishEnabled =>
-      currentlanguage == "en";
+  ConfigProvider() {
+    _loadLanguage();
+  }
 
-  void changeLanguage(
-      String newlanguage) {
+  bool get isEnglishEnabled => currentlanguage == 'en';
 
-    if (currentlanguage ==
-        newlanguage) {
-      return;
+  Future<void> _loadLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getString(_langKey);
+    if (saved != null && saved != currentlanguage) {
+      currentlanguage = saved;
+      notifyListeners();
     }
+  }
 
-    currentlanguage =
-        newlanguage;
-
+  Future<void> changeLanguage(String newLanguage) async {
+    if (currentlanguage == newLanguage) return;
+    currentlanguage = newLanguage;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_langKey, newLanguage);
     notifyListeners();
   }
 }
