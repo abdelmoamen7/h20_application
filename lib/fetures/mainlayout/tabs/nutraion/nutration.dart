@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/colorsmanger/colorsmanger.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../models/nutrition_model.dart';
+import '../../../../services/FirebaseServcies/firebaseService.dart';
 import '../../../../services/NutrationServices/nutrition_provider.dart';
 
 class NutritionScreen extends StatelessWidget {
@@ -69,6 +70,27 @@ class _NutritionViewState extends State<_NutritionView> {
       _foodController.text = n.foodName;
       setState(() {});
     }
+  }
+
+  Future<void> _logToToday(NutritionModel nutrition) async {
+    final calories = nutrition.calories.round();
+    final protein = nutrition.protein.round();
+    await Fairebaeservices.updateDailyTracking(
+      addCalories: calories,
+      addProtein: protein,
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '+ $calories kcal  •  + ${protein}g protein',
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: Colorsmanger.Blue,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -148,6 +170,9 @@ class _NutritionViewState extends State<_NutritionView> {
                           isLoading: provider.isLoading,
                           errorMessage: provider.errorMessage,
                           nutrition: provider.nutrition,
+                          onLog: provider.nutrition != null
+                              ? () => _logToToday(provider.nutrition!)
+                              : null,
                         ),
                       ),
                     ],
@@ -448,11 +473,13 @@ class _NutritionStateView extends StatelessWidget {
   final bool isLoading;
   final String? errorMessage;
   final NutritionModel? nutrition;
+  final VoidCallback? onLog;
 
   const _NutritionStateView({
     required this.isLoading,
     required this.errorMessage,
     required this.nutrition,
+    this.onLog,
   });
 
   @override
@@ -508,6 +535,31 @@ class _NutritionStateView extends StatelessWidget {
         _ProductHeaderCard(nutrition: n),
         SizedBox(height: 14.h),
         _CaloriesHeroCard(nutrition: n),
+        SizedBox(height: 12.h),
+        // ── Log to Today button ──────────────────────────────────────────
+        SizedBox(
+          width: double.infinity,
+          height: 50.h,
+          child: ElevatedButton.icon(
+            onPressed: onLog,
+            icon: const Icon(Icons.add_circle_outline_rounded),
+            label: Text(
+              '${AppLocalizations.of(context)!.log_meal}  •  ${n.calories.toStringAsFixed(0)} kcal',
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w700,
+                fontSize: 15.sp,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green.shade600,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.r),
+              ),
+            ),
+          ),
+        ),
         SizedBox(height: 14.h),
         Text(
           AppLocalizations.of(context)!.macronutrients,

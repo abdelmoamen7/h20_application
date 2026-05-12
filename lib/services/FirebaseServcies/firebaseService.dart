@@ -79,7 +79,114 @@ class Fairebaeservices{
   }
 
 
-/// Loads [UserModel.currentUser] when already signed in; safe to unawait after [Firebase.initializeApp].
+  /// Updates daily calories and water consumed. Resets if it's a new day.
+  static Future<void> updateDailyTracking({
+    int? addCalories,
+    double? addWater,
+    int? addProtein,
+  }) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+
+    try {
+      final db = FirebaseFirestore.instance;
+      final doc = db.collection("Users").doc(uid);
+      final snapshot = await doc.get();
+      if (!snapshot.exists) return;
+
+      final data = snapshot.data() as Map<String, dynamic>?;
+      if (data == null) return;
+
+      final now = DateTime.now();
+      final todayStr =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+      final lastDate = data['lastTrackingDate'] as String? ?? '';
+      final isNewDay = lastDate != todayStr;
+
+      final currentCal = isNewDay ? 0 : (data['dailyCaloriesConsumed'] as num?)?.toInt() ?? 0;
+      final currentWater = isNewDay ? 0.0 : (data['dailyWaterConsumed'] as num?)?.toDouble() ?? 0.0;
+      final currentProtein = isNewDay ? 0 : (data['dailyProteinConsumed'] as num?)?.toInt() ?? 0;
+
+      final newCal = (currentCal + (addCalories ?? 0)).clamp(0, 99999);
+      final newWater = (currentWater + (addWater ?? 0.0)).clamp(0.0, 20.0);
+      final newProtein = (currentProtein + (addProtein ?? 0)).clamp(0, 9999);
+
+      await doc.update({
+        'dailyCaloriesConsumed': newCal,
+        'dailyWaterConsumed': newWater,
+        'dailyProteinConsumed': newProtein,
+        'lastTrackingDate': todayStr,
+      });
+
+      // Keep in-memory cache in sync
+      if (UserModel.currentUser != null) {
+        UserModel.currentUser!.dailyCaloriesConsumed = newCal;
+        UserModel.currentUser!.dailyWaterConsumed = newWater;
+        UserModel.currentUser!.dailyProteinConsumed = newProtein;
+        UserModel.currentUser!.lastTrackingDate = todayStr;
+      }
+    } catch (_) {
+      // Non-fatal
+    }
+  }
+
+  /// Updates the daily streak in Firestore on every app open.
+  /// - Same day → no change
+  /// - Consecutive day → streak + 1
+  /// - Missed a day or more → reset to 1
+  static Future<void> updateStreak() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+
+    try {
+      final db = FirebaseFirestore.instance;
+      final doc = db.collection("Users").doc(uid);
+      final snapshot = await doc.get();
+      if (!snapshot.exists) return;
+
+      final data = snapshot.data() as Map<String, dynamic>?;
+      if (data == null) return;
+
+      final now = DateTime.now();
+      final todayStr =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+
+      final lastOpenStr = data['lastOpenDate'] as String?;
+      final currentStreak = (data['streakDays'] as num?)?.toInt() ?? 0;
+
+      // Already opened today — nothing to do
+      if (lastOpenStr == todayStr) return;
+
+      int newStreak;
+      if (lastOpenStr != null) {
+        final lastOpen = DateTime.tryParse(lastOpenStr);
+        if (lastOpen != null) {
+          final diff = DateTime(now.year, now.month, now.day)
+              .difference(DateTime(lastOpen.year, lastOpen.month, lastOpen.day))
+              .inDays;
+          // Consecutive day
+          newStreak = diff == 1 ? currentStreak + 1 : 1;
+        } else {
+          newStreak = 1;
+        }
+      } else {
+        // First ever open
+        newStreak = 1;
+      }
+
+      await doc.update({
+        'streakDays': newStreak,
+        'lastOpenDate': todayStr,
+      });
+
+      // Keep in-memory cache in sync
+      if (UserModel.currentUser != null) {
+        UserModel.currentUser!.streakDays = newStreak;
+      }
+    } catch (_) {
+      // Non-fatal — streak update failure should never block the app
+    }
+  }
   static Future<void> prefetchCurrentUserProfile() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;

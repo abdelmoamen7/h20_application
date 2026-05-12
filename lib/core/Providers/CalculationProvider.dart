@@ -44,15 +44,15 @@ class CalculationProvider {
     );
 
     /// DAILY CALORIES
-
-    final calories =
-    (bmr * activityMultiplier)
-        .round();
+    /// Use user's manually set target if provided, otherwise calculate from BMR
+    final calories = user.caloriesTarget > 0
+        ? user.caloriesTarget
+        : (bmr * activityMultiplier).round();
 
     /// WATER TARGET
-
-    final water =
-        user.weight * 0.035;
+    final water = user.waterIntake > 0
+        ? user.waterIntake
+        : user.weight * 0.035;
 
     /// PROTEIN
 

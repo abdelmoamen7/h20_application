@@ -211,6 +211,18 @@ class _HomeState extends State<Home> {
         UserModel user = snapshot.data!;
         HealthMetricsModel metrics = CalculationProvider.calculate(user);
 
+        // Daily calorie progress (0.0 – 1.0)
+        final calTarget = metrics.calories > 0 ? metrics.calories : 1;
+        final calProgress = (user.dailyCaloriesConsumed / calTarget).clamp(0.0, 1.0);
+
+        // Daily protein progress (0.0 – 1.0)
+        final proteinTarget = metrics.proteinTarget > 0 ? metrics.proteinTarget : 1;
+        final proteinProgress = (user.dailyProteinConsumed / proteinTarget).clamp(0.0, 1.0);
+
+        // Daily water progress (0.0 – 1.0)
+        final waterTarget = metrics.waterTarget > 0 ? metrics.waterTarget : 1.0;
+        final waterProgress = (user.dailyWaterConsumed / waterTarget).clamp(0.0, 1.0);
+
         return Scaffold(
           backgroundColor: Colorsmanger.Whiteblue,
           body: ListView(
@@ -219,12 +231,12 @@ class _HomeState extends State<Home> {
               _buildModernHeader(user, context),
               SizedBox(height: 25.h),
               
-              _buildDailyProgressGrid(user, metrics),
+              _buildDailyProgressGrid(user, metrics, calProgress, waterProgress, proteinProgress),
               SizedBox(height: 25.h),
 
               ProgressCard(
                 metrics: metrics,
-                onTap: () => _goProfile(context),
+                user: user,
               ),
               SizedBox(height: 25.h),
               
@@ -367,7 +379,8 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildDailyProgressGrid(UserModel user, HealthMetricsModel metrics) {
+  Widget _buildDailyProgressGrid(UserModel user, HealthMetricsModel metrics,
+      double calProgress, double waterProgress, double proteinProgress) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
@@ -387,23 +400,16 @@ class _HomeState extends State<Home> {
               Expanded(
                 child: _buildGridCard(
                   AppLocalizations.of(context)!.calories,
-                  "${metrics.calories} kcal",
+                  "${user.dailyCaloriesConsumed} / ${metrics.calories} kcal",
                   Icons.local_fire_department,
-                  0.7,
+                  calProgress,
                   () => _goNutrition(context),
                   emojiKey: 'calories',
                 ),
               ),
               SizedBox(width: 15.w),
               Expanded(
-                child: _buildGridCard(
-                  AppLocalizations.of(context)!.water,
-                  metrics.waterTargetText,
-                  Icons.water_drop,
-                  0.4,
-                  () => _goNutrition(context),
-                  emojiKey: 'water',
-                ),
+                child: _buildWaterCard(user, metrics, waterProgress, context),
               ),
             ],
           ),
@@ -423,17 +429,137 @@ class _HomeState extends State<Home> {
               SizedBox(width: 15.w),
               Expanded(
                 child: _buildGridCard(
-                  AppLocalizations.of(context)!.goal,
-                  user.goal.replaceAll('_', ' ').toUpperCase(),
-                  Icons.flag_outlined,
-                  metrics.goalProgress,
-                  () => _goProfile(context),
-                  emojiKey: 'goal',
+                  AppLocalizations.of(context)!.protein,
+                  "${user.dailyProteinConsumed} / ${metrics.proteinTarget}g",
+                  Icons.fitness_center,
+                  proteinProgress,
+                  () => _goNutrition(context),
+                  emojiKey: 'protein',
                 ),
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  /// Water card with +/- buttons to log intake directly from home
+  Widget _buildWaterCard(UserModel user, HealthMetricsModel metrics,
+      double progress, BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final radius = BorderRadius.circular(20.r);
+    return Container(
+      height: 140.h,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colorsmanger.Blue, Colorsmanger.darkblue.withValues(alpha: 0.9)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: radius,
+        boxShadow: [
+          BoxShadow(
+            color: Colorsmanger.Blue.withValues(alpha: 0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          )
+        ],
+      ),
+      child: Stack(
+        clipBehavior: Clip.hardEdge,
+        children: [
+          Positioned(
+            right: -30.w, top: -30.h,
+            child: Container(
+              width: 100.w, height: 100.w,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.1),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(6.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Icon(Icons.water_drop, color: Colors.white, size: 18.sp),
+                    ),
+                    SizedBox(
+                      width: 22.w, height: 22.w,
+                      child: CircularProgressIndicator(
+                        value: progress,
+                        strokeWidth: 3,
+                        backgroundColor: Colors.white.withValues(alpha: 0.2),
+                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '💧 ${user.dailyWaterConsumed.toStringAsFixed(1)} / ${metrics.waterTarget.toStringAsFixed(1)} L',
+                      style: GoogleFonts.inter(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      children: [
+                        Text(
+                          l.water,
+                          style: GoogleFonts.inter(fontSize: 11.sp, color: Colors.white70),
+                        ),
+                        const Spacer(),
+                        // Remove 0.25L
+                        _waterBtn(Icons.remove, () async {
+                          await Fairebaeservices.updateDailyTracking(addWater: -0.25);
+                        }),
+                        SizedBox(width: 4.w),
+                        // Add 0.25L
+                        _waterBtn(Icons.add, () async {
+                          await Fairebaeservices.updateDailyTracking(addWater: 0.25);
+                        }),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _waterBtn(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 24.w,
+        height: 24.w,
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.25),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: Colors.white, size: 14.sp),
       ),
     );
   }
@@ -451,6 +577,7 @@ class _HomeState extends State<Home> {
     if (emojiKey == 'water') graphicEmoji = "💧";
     if (emojiKey == 'streak') graphicEmoji = "⚡";
     if (emojiKey == 'goal') graphicEmoji = "🎯";
+    if (emojiKey == 'protein') graphicEmoji = "💪";
 
     final radius = BorderRadius.circular(20.r);
     return Material(

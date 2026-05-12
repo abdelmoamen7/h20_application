@@ -40,6 +40,9 @@ class _SplashscreenState extends State<Splashscreen> {
     // Warm profile cache without blocking navigation.
     unawaited(Fairebaeservices.prefetchCurrentUserProfile());
 
+    // Update daily streak (fire-and-forget — never blocks navigation)
+    unawaited(Fairebaeservices.updateStreak());
+
     final User? firebaseUser = FirebaseAuth.instance.currentUser;
 
     if (firebaseUser != null) {
