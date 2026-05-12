@@ -391,6 +391,7 @@ class _HomeState extends State<Home> {
                   Icons.local_fire_department,
                   0.7,
                   () => _goNutrition(context),
+                  emojiKey: 'calories',
                 ),
               ),
               SizedBox(width: 15.w),
@@ -401,6 +402,7 @@ class _HomeState extends State<Home> {
                   Icons.water_drop,
                   0.4,
                   () => _goNutrition(context),
+                  emojiKey: 'water',
                 ),
               ),
             ],
@@ -415,6 +417,7 @@ class _HomeState extends State<Home> {
                   Icons.local_fire_department_outlined,
                   user.streakDays > 0 ? 1.0 : 0.0,
                   () => _goProfile(context),
+                  emojiKey: 'streak',
                 ),
               ),
               SizedBox(width: 15.w),
@@ -425,6 +428,7 @@ class _HomeState extends State<Home> {
                   Icons.flag_outlined,
                   metrics.goalProgress,
                   () => _goProfile(context),
+                  emojiKey: 'goal',
                 ),
               ),
             ],
@@ -439,14 +443,14 @@ class _HomeState extends State<Home> {
     String value,
     IconData icon,
     double progress,
-    VoidCallback onTap,
-  ) {
-    // Select an emoji based on the title to serve as a nice graphic shape
+    VoidCallback onTap, {
+    String? emojiKey, // locale-independent key for emoji selection
+  }) {
     String graphicEmoji = "✨";
-    if (title.contains("Calories")) graphicEmoji = "🔥";
-    if (title.contains("Water")) graphicEmoji = "💧";
-    if (title.contains("Streak")) graphicEmoji = "⚡";
-    if (title.contains("Goal")) graphicEmoji = "🎯";
+    if (emojiKey == 'calories') graphicEmoji = "🔥";
+    if (emojiKey == 'water') graphicEmoji = "💧";
+    if (emojiKey == 'streak') graphicEmoji = "⚡";
+    if (emojiKey == 'goal') graphicEmoji = "🎯";
 
     final radius = BorderRadius.circular(20.r);
     return Material(

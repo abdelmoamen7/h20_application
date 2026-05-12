@@ -11,13 +11,27 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../models/UserModel.dart';
 import '../../../../services/FirebaseServcies/firebaseService.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  late final Stream<UserModel?> _userStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _userStream = Fairebaeservices.streamCurrentUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<UserModel?>(
-      stream: Fairebaeservices.streamCurrentUser(),
+      stream: _userStream,
+      initialData: UserModel.currentUser,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

@@ -102,27 +102,19 @@ class Fairebaeservices{
     return  documentSnapshot.data();
 
   }
-  /// stream the user data
-  static Stream<UserModel?>
-  streamCurrentUser() {
+  static Stream<UserModel?> streamCurrentUser() {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return const Stream.empty();
     FirebaseFirestore db = FirebaseFirestore.instance;
-    return db.collection("Users").doc(
-      FirebaseAuth.instance.currentUser!.uid,)
-        .withConverter<UserModel>(fromFirestore: (snapshot, _) => UserModel.fromJson(
-            snapshot.data()!,
-          ),
-      toFirestore:
-          (user, _) =>
-          user.toJosn(),
-    )
+    return db
+        .collection("Users")
+        .doc(uid)
+        .withConverter<UserModel>(
+          fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+          toFirestore: (user, _) => user.toJosn(),
+        )
         .snapshots()
-        .map(
-
-          (snapshot) {
-
-        return snapshot.data();
-      },
-    );
+        .map((snapshot) => snapshot.data());
   }
 
 }

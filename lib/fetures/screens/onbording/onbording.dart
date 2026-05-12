@@ -223,6 +223,29 @@ class _OnBoardingState extends State<OnBoarding> {
     );
   }
 
+  /// Convert localized gender display string → canonical key stored in Firestore
+  String _genderToKey(String display, AppLocalizations l) {
+    if (display == l.male) return 'male';
+    if (display == l.female) return 'female';
+    return display.toLowerCase();
+  }
+
+  /// Convert localized goal display string → canonical key stored in Firestore
+  String _goalToKey(String display, AppLocalizations l) {
+    if (display == l.lose_weight) return 'lose_weight';
+    if (display == l.gain_muscle) return 'gain_muscle';
+    if (display == l.stay_fit) return 'stay_fit';
+    return display.toLowerCase().replaceAll(' ', '_');
+  }
+
+  /// Convert localized activity level display string → canonical key
+  String _activityToKey(String display, AppLocalizations l) {
+    if (display == l.beginner) return 'beginner';
+    if (display == l.moderate) return 'moderate';
+    if (display == l.advanced) return 'advanced';
+    return display.toLowerCase();
+  }
+
   Future<void> _savePersonalInfo() async {
     final l = AppLocalizations.of(context)!;
     if (formkey.currentState?.validate() == false) return;
@@ -245,9 +268,10 @@ class _OnBoardingState extends State<OnBoarding> {
         weight: double.parse(_weightController.text.trim()),
         targetWeight: double.parse(_targetWeightController.text.trim()),
         height: double.parse(_heightController.text.trim()),
-        gender: _selectedGender!.toLowerCase(),
-        goal: _selectedGoal ?? "stay_fit",
-        activityLevel: _selectedActivityLevel ?? "moderate",
+        // Store canonical lowercase keys, not localized display strings
+        gender: _genderToKey(_selectedGender!, l),
+        goal: _goalToKey(_selectedGoal!, l),
+        activityLevel: _activityToKey(_selectedActivityLevel!, l),
         waterIntake: 0,
         caloriesTarget: int.parse(_caloriesController.text.trim()),
         streakDays: 0,

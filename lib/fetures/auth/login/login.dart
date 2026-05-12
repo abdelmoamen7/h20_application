@@ -134,7 +134,7 @@ class _LoginState extends State<Login> {
                   child: CustomTextButton(
                     texts: l.forget_password,
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, Routesmanger.forgetPassword);
+                      Navigator.pushNamed(context, Routesmanger.forgetPassword);
                     },
                   ),
                 ),

@@ -99,7 +99,7 @@ class UserModel {
 
       profileImage:
       json["profileImage"],
-      targetWeight: 0,
+      targetWeight: (json["targetWeight"] as num?)?.toDouble() ?? 0,
     );
   }
   Map<String, dynamic> toJosn() {
