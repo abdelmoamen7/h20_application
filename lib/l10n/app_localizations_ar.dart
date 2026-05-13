@@ -201,6 +201,8 @@ class AppLocalizationsAr extends AppLocalizations {
   @override String get day_streak => 'يوم متتالي';
   @override String get sign_out => 'تسجيل الخروج';
   @override String get no_user_data_found => 'لم يتم العثور على بيانات المستخدم';
+  @override String get camera => 'الكاميرا';
+  @override String get gallery => 'معرض الصور';
   @override String get age_label => 'العمر';
   @override String get height_label => 'الطول';
   @override String get weight_label => 'الوزن';

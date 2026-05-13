@@ -9,6 +9,7 @@ import '../../core/assetsmanger/assetsmanger.dart';
 import '../../core/colorsmanger/colorsmanger.dart';
 import '../../core/routesmanger/routesManger.dart';
 import '../../services/FirebaseServcies/firebaseService.dart';
+import '../../services/NotificationService/notification_service.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -42,6 +43,11 @@ class _SplashscreenState extends State<Splashscreen> {
 
     // Update daily streak (fire-and-forget — never blocks navigation)
     unawaited(Fairebaeservices.updateStreak());
+
+    // Schedule daily reminders if user is logged in
+    if (FirebaseAuth.instance.currentUser != null) {
+      unawaited(NotificationService.scheduleDailyReminders());
+    }
 
     final User? firebaseUser = FirebaseAuth.instance.currentUser;
 

@@ -236,6 +236,8 @@ abstract class AppLocalizations {
   String get day_streak;
   String get sign_out;
   String get no_user_data_found;
+  String get camera;
+  String get gallery;
   String get age_label;
   String get height_label;
   String get weight_label;

@@ -60,6 +60,17 @@ class _HomeState extends State<Home> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Handle bar
+            Center(
+              child: Container(
+                width: 40.w, height: 4.h,
+                margin: EdgeInsets.only(bottom: 16.h),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+            ),
             Text(
               l.notifications,
               style: GoogleFonts.inter(
@@ -68,12 +79,12 @@ class _HomeState extends State<Home> {
                 color: Colorsmanger.darkblue,
               ),
             ),
-            SizedBox(height: 12.h),
-            Text(
-              l.notifications_empty,
-              style: GoogleFonts.inter(fontSize: 14.sp, color: Colorsmanger.Grey, height: 1.4),
-            ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 16.h),
+            _reminderTile(ctx, '🍳', '08:00', 'Breakfast reminder', 'Log your breakfast to track daily calories.'),
+            _reminderTile(ctx, '🥗', '13:00', 'Lunch reminder', 'Don\'t forget to log your lunch meal.'),
+            _reminderTile(ctx, '💧', '15:00', 'Water reminder', 'Stay hydrated — log your water intake.'),
+            _reminderTile(ctx, '🍽️', '19:00', 'Dinner reminder', 'Log your dinner to complete today\'s nutrition.'),
+            SizedBox(height: 16.h),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
@@ -87,6 +98,59 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _reminderTile(BuildContext context, String emoji, String time,
+      String title, String subtitle) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.h),
+      child: Row(
+        children: [
+          Container(
+            width: 44.w,
+            height: 44.w,
+            decoration: BoxDecoration(
+              color: Colorsmanger.Blue.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Center(
+              child: Text(emoji, style: TextStyle(fontSize: 20.sp)),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colorsmanger.darkblue,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.inter(
+                    fontSize: 11.sp,
+                    color: Colorsmanger.Grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            time,
+            style: GoogleFonts.inter(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w700,
+              color: Colorsmanger.Blue,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -248,6 +312,7 @@ class _HomeState extends State<Home> {
               
               MacroCard(
                 metrics: metrics,
+                user: user,
                 onTap: () => _goNutrition(context),
                 onLogMeal: () => _goNutrition(context),
               ),

@@ -1,15 +1,19 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/colorsmanger/colorsmanger.dart';
 import '../../../../core/config/ConfigProvider.dart';
 import '../../../../core/routesmanger/routesManger.dart';
+import '../../../../core/utilis/Uiutills.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../models/UserModel.dart';
 import '../../../../services/FirebaseServcies/firebaseService.dart';
+import '../../../../services/NotificationService/notification_service.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -20,11 +24,76 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   late final Stream<UserModel?> _userStream;
+  bool _uploadingPhoto = false;
 
   @override
   void initState() {
     super.initState();
     _userStream = Fairebaeservices.streamCurrentUser();
+  }
+
+  Future<void> _pickAndUploadPhoto(BuildContext context) async {
+    final l = AppLocalizations.of(context)!;
+
+    // Show source picker
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40.w,
+                height: 4.h,
+                margin: EdgeInsets.only(bottom: 16.h),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt_rounded, color: Colorsmanger.Blue),
+                title: Text(l.camera, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                onTap: () => Navigator.pop(ctx, ImageSource.camera),
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library_rounded, color: Colorsmanger.Blue),
+                title: Text(l.gallery, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                onTap: () => Navigator.pop(ctx, ImageSource.gallery),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (source == null) return;
+
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(
+      source: source,
+      imageQuality: 75,
+      maxWidth: 600,
+    );
+
+    if (picked == null) return;
+    if (!mounted) return;
+
+    setState(() => _uploadingPhoto = true);
+
+    final url = await Fairebaeservices.uploadProfileImage(File(picked.path));
+
+    if (!mounted) return;
+    setState(() => _uploadingPhoto = false);
+
+    if (url == null) {
+      uitils.ShowToastMassage(l.failed_save, Colors.red);
+    }
   }
 
   @override
@@ -118,6 +187,7 @@ class _ProfileState extends State<Profile> {
                   icon: Icon(Icons.logout, color: Colors.white, size: 28.sp),
                   tooltip: AppLocalizations.of(context)!.sign_out,
                   onPressed: () async {
+                    await NotificationService.cancelAll();
                     await FirebaseAuth.instance.signOut();
                     if (context.mounted) {
                       Navigator.pushNamedAndRemoveUntil(
@@ -131,22 +201,54 @@ class _ProfileState extends State<Profile> {
               ],
             ),
           ),
-          CircleAvatar(
-            radius: 50.r,
-            backgroundColor: Colors.white,
-            backgroundImage: user.profileImage != null && user.profileImage!.isNotEmpty
-                ? NetworkImage(user.profileImage!)
-                : null,
-            child: user.profileImage == null || user.profileImage!.isEmpty
-                ? Text(
-                    user.name.isNotEmpty ? user.name[0].toUpperCase() : 'U',
-                    style: GoogleFonts.inter(
-                      fontSize: 40.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colorsmanger.Blue,
-                    ),
-                  )
-                : null,
+          GestureDetector(
+            onTap: () => _pickAndUploadPhoto(context),
+            child: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                CircleAvatar(
+                  radius: 50.r,
+                  backgroundColor: Colors.white,
+                  backgroundImage: user.profileImage != null &&
+                          user.profileImage!.isNotEmpty
+                      ? NetworkImage(user.profileImage!)
+                      : null,
+                  child: _uploadingPhoto
+                      ? const CircularProgressIndicator(color: Colorsmanger.Blue)
+                      : user.profileImage == null ||
+                              user.profileImage!.isEmpty
+                          ? Text(
+                              user.name.isNotEmpty
+                                  ? user.name[0].toUpperCase()
+                                  : 'U',
+                              style: GoogleFonts.inter(
+                                fontSize: 40.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colorsmanger.Blue,
+                              ),
+                            )
+                          : null,
+                ),
+                Container(
+                  padding: EdgeInsets.all(6.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.15),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.camera_alt_rounded,
+                    color: Colorsmanger.Blue,
+                    size: 16.sp,
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 15.h),
           Text(

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:io';
 import '../../models/HealthMetricsModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/nutrition_model.dart';
@@ -78,6 +80,42 @@ class Fairebaeservices{
     return nutraiondocumnet.set(nutration);
   }
 
+
+  /// Uploads a profile image to Firebase Storage and saves the URL to Firestore.
+  /// Returns the download URL on success, null on failure.
+  static Future<String?> uploadProfileImage(File imageFile) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return null;
+
+    try {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('profile_images')
+          .child('$uid.jpg');
+
+      await ref.putFile(
+        imageFile,
+        SettableMetadata(contentType: 'image/jpeg'),
+      );
+
+      final downloadUrl = await ref.getDownloadURL();
+
+      // Save URL to Firestore
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .update({'profileImage': downloadUrl});
+
+      // Update in-memory cache
+      if (UserModel.currentUser != null) {
+        UserModel.currentUser!.profileImage = downloadUrl;
+      }
+
+      return downloadUrl;
+    } catch (_) {
+      return null;
+    }
+  }
 
   /// Updates daily calories and water consumed. Resets if it's a new day.
   static Future<void> updateDailyTracking({

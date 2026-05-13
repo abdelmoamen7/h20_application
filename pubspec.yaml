@@ -28,6 +28,10 @@ dependencies:
   dio: ^5.9.2
   mobile_scanner: ^7.2.0
   cached_network_image: ^3.4.1
+  image_picker: ^1.1.2
+  firebase_storage: ^13.3.0
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.9.4
 
 dev_dependencies:
   flutter_test:

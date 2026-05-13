@@ -201,6 +201,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get day_streak => 'Day Streak';
   @override String get sign_out => 'Sign Out';
   @override String get no_user_data_found => 'No User Data Found';
+  @override String get camera => 'Camera';
+  @override String get gallery => 'Gallery';
   @override String get age_label => 'Age';
   @override String get height_label => 'Height';
   @override String get weight_label => 'Weight';

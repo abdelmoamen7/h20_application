@@ -9,6 +9,9 @@ class WorkoutApiService {
   static List<FreeExerciseModel>? _cachedExercises;
   static Future<List<FreeExerciseModel>>? _inFlightRequest;
 
+  /// Call this to force a fresh fetch (e.g. after removing the take(50) limit)
+  static void clearCache() => _cachedExercises = null;
+
   Future<List<FreeExerciseModel>> fetchExercises({
     bool forceRefresh = false,
   }) async {
@@ -44,8 +47,8 @@ class WorkoutApiService {
       // Decode in a background isolate to keep scrolling / transitions smooth.
       final exercises = await compute(_decodeExercisesJson, response.body);
 
-      exercises.shuffle();
-      return exercises.take(50).toList();
+      exercises.sort((a, b) => a.name.compareTo(b.name));
+      return exercises;
     } catch (e) {
       throw Exception('Error fetching exercises: $e');
     }
